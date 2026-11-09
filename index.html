@@ -32,8 +32,8 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:#0a0a0a;color:#e0e0e0}
-.hero-track{position:relative;width:100%;height:280vh}
-.hero-track .hero{position:sticky;top:0;width:100%;max-width:1280px;height:100vh;max-height:942px;min-height:0;margin:0 auto;padding:92px 80px 36px;display:flex;flex-direction:column;justify-content:space-between;background:linear-gradient(to bottom,#0a0a0a,#111111 50%,#0a0a0a);z-index:10;overflow:hidden}
+.hero-track{position:relative;width:100%;background:#0a0a0a}
+.hero-track .hero{position:relative;width:100%;max-width:1280px;min-height:calc(100vh - 76px);margin:0 auto;padding:96px 80px 40px;display:flex;flex-direction:column;justify-content:space-between;background:linear-gradient(to bottom,#0a0a0a,#111111 50%,#0a0a0a);z-index:10;overflow:hidden;box-sizing:border-box}
 .blob{position:absolute;border-radius:9999px;pointer-events:none}
 .blob-a{left:50%;transform:translateX(-50%);width:700px;top:-12.15%;bottom:37.85%;background:rgba(0,200,83,.1);filter:blur(140px)}
 .blob-b{right:40px;bottom:40px;width:450px;height:450px;background:rgba(212,175,55,.08);filter:blur(120px)}
@@ -514,12 +514,8 @@ img, svg, canvas {
   .hdr-nav.mobile-open { top: 68px; padding: 20px 20px 28px; }
 
   /* Hero Section */
-  .hero-track { height: 210vh; }
-  .hero-track .hero {
-    padding: 76px 16px 20px;
-    height: 100vh;
-    min-height: 600px;
-  }
+  .hero-track { height: auto; }
+  .hero-track .hero { padding: 80px 16px 24px; min-height: calc(100vh - 68px); height: auto; }
   .topbar {
     gap: 8px;
     justify-content: center;
@@ -1972,12 +1968,13 @@ function stepRootCanal(step) {
   let dragStartProgress = 0;
 
   function getScrollProgress() {
-    if (!track) return 0;
-    const rect = track.getBoundingClientRect();
-    const scrollDist = track.offsetHeight - window.innerHeight;
-    if (scrollDist <= 0) return 0;
+    const heroEl = document.getElementById('hero');
+    if (!heroEl) return 0;
+    const rect = heroEl.getBoundingClientRect();
     const scrolled = -rect.top;
-    return Math.max(0, Math.min(1, scrolled / scrollDist));
+    const heroHeight = heroEl.offsetHeight || window.innerHeight;
+    if (scrolled <= 0) return 0;
+    return Math.max(0, Math.min(1, scrolled / (heroHeight * 0.75)));
   }
 
   window.addEventListener('scroll', function() {
@@ -2005,11 +2002,6 @@ function stepRootCanal(step) {
     if (isDragging) {
       isDragging = false;
       try { canvas.releasePointerCapture(e.pointerId); } catch(err){}
-      if (track) {
-        const scrollDist = track.offsetHeight - window.innerHeight;
-        const targetY = track.offsetTop + (targetProgress * scrollDist);
-        window.scrollTo({ top: targetY, behavior: 'auto' });
-      }
     }
   }
 
@@ -2022,11 +2014,6 @@ function stepRootCanal(step) {
       e.preventDefault();
       const p = parseFloat(btn.getAttribute('data-target') || '0');
       targetProgress = p;
-      if (track) {
-        const scrollDist = track.offsetHeight - window.innerHeight;
-        const targetY = track.offsetTop + (p * scrollDist);
-        window.scrollTo({ top: targetY, behavior: 'smooth' });
-      }
     });
   });
 
