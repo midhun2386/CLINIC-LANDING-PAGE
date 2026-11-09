@@ -513,69 +513,116 @@ img, svg, canvas {
   .hdr-btn { padding: 8px 14px; font-size: 12px; }
   .hdr-nav.mobile-open { top: 68px; padding: 20px 20px 28px; }
 
-  /* Hero Section */
+    /* Hero Section Mobile Perfection */
   .hero-track { height: auto; }
-  .hero-track .hero { padding: 80px 16px 24px; min-height: calc(100vh - 68px); height: auto; }
+  .hero-track .hero {
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 76px 16px 28px !important;
+    min-height: auto !important;
+    height: auto !important;
+  }
+  .canvas {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: 270px !important;
+    margin: 16px 0 10px !important;
+    border-radius: 20px !important;
+    background: radial-gradient(circle at 50% 50%, #1e1e1e 0%, #111111 100%) !important;
+    border: 1px solid #2a2a2a !important;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.6) !important;
+    order: 3 !important;
+    overflow: hidden !important;
+    pointer-events: auto !important;
+  }
+  #heroCanvas {
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 100% !important;
+    height: 100% !important;
+    touch-action: pan-y !important;
+    cursor: grab !important;
+  }
   .topbar {
-    gap: 8px;
-    justify-content: center;
+    order: 1 !important;
+    margin-bottom: 12px !important;
+    gap: 8px !important;
+    justify-content: center !important;
+    width: 100% !important;
   }
   .status {
-    padding: 4px 10px;
-    font-size: 10px;
+    padding: 4px 10px !important;
+    font-size: 10px !important;
   }
-  .status .t12 { font-size: 10.5px; }
+  .status .t12 { font-size: 10.5px !important; }
   .modes {
-    width: 100%;
-    justify-content: center;
-    overflow-x: auto;
+    width: 100% !important;
+    justify-content: center !important;
+    overflow-x: auto !important;
+    gap: 4px !important;
   }
   .mode {
-    font-size: 11px;
-    padding: 4px 8px;
+    font-size: 11px !important;
+    padding: 5px 10px !important;
+    white-space: nowrap !important;
   }
   .main {
-    min-height: auto;
-    padding: 16px 0;
+    order: 2 !important;
+    min-height: auto !important;
+    padding: 0 !important;
+    width: 100% !important;
   }
   .grid {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    height: auto;
-    grid-template-rows: auto;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 14px !important;
+    height: auto !important;
+    width: 100% !important;
   }
   .left {
-    max-width: 100%;
-    gap: 14px;
+    max-width: 100% !important;
+    width: 100% !important;
+    gap: 14px !important;
+    align-items: flex-start !important;
   }
   .right {
-    display: none; /* Hide floating badge pills on mobile to show 3D tooth model cleanly */
+    display: none !important;
   }
   h1 {
-    font-size: 34px !important;
-    line-height: 40px !important;
-    letter-spacing: -0.8px;
+    font-size: 32px !important;
+    line-height: 38px !important;
+    letter-spacing: -0.8px !important;
+    width: 100% !important;
   }
   .lead {
     width: 100% !important;
     max-width: 100% !important;
     white-space: normal !important;
-    font-size: 14px;
-    line-height: 22px;
+    font-size: 14px !important;
+    line-height: 22px !important;
   }
   .ctas {
-    gap: 10px;
-    width: 100%;
+    gap: 10px !important;
+    width: 100% !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
   }
   .btn {
-    padding: 10px 20px;
-    font-size: 13px;
-    flex: 1 1 auto;
-    justify-content: center;
+    padding: 11px 18px !important;
+    font-size: 13px !important;
+    flex: 1 1 auto !important;
+    justify-content: center !important;
   }
   .bottom {
-    padding-top: 10px;
+    order: 4 !important;
+    padding-top: 10px !important;
+    justify-content: center !important;
+  }
+  .bottom .scroll {
+    display: none !important;
   }
   .hint { font-size: 11px; }
 
@@ -1979,23 +2026,48 @@ function stepRootCanal(step) {
 
   window.addEventListener('scroll', function() {
     if (!isDragging) {
-      targetProgress = getScrollProgress();
+      if (window.innerWidth > 768) {
+        targetProgress = getScrollProgress();
+      }
     }
   }, { passive: true });
 
-  // Interactive Drag-to-Rotate / Inspect
+  // Interactive Drag-to-Rotate / Inspect (Touch-Friendly & Non-Blocking)
+  let dragStartY = 0;
+  let isVerticalScroll = false;
+
   canvas.addEventListener('pointerdown', function(e) {
     isDragging = true;
     dragStartX = e.clientX;
+    dragStartY = e.clientY;
     dragStartProgress = targetProgress;
-    canvas.setPointerCapture(e.pointerId);
+    isVerticalScroll = false;
+    if (e.pointerType === 'mouse') {
+      canvas.setPointerCapture(e.pointerId);
+    }
   });
 
   canvas.addEventListener('pointermove', function(e) {
     if (!isDragging) return;
     const dx = e.clientX - dragStartX;
-    const deltaProgress = dx / 850;
-    targetProgress = Math.max(0, Math.min(1, dragStartProgress + deltaProgress));
+    const dy = e.clientY - dragStartY;
+
+    // On touch devices, allow vertical swiping to scroll the page smoothly
+    if (e.pointerType === 'touch' && !isVerticalScroll) {
+      if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 6) {
+        isVerticalScroll = true;
+        isDragging = false;
+        return;
+      } else if (Math.abs(dx) > 6) {
+        try { canvas.setPointerCapture(e.pointerId); } catch(err){}
+      }
+    }
+
+    if (!isVerticalScroll) {
+      const sensitivity = window.innerWidth <= 768 ? 420 : 850;
+      const deltaProgress = dx / sensitivity;
+      targetProgress = Math.max(0, Math.min(1, dragStartProgress + deltaProgress));
+    }
   });
 
   function stopDrag(e) {
