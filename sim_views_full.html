@@ -1,0 +1,166 @@
+id="simView-implant">
+<div class="lg:col-span-7 flex flex-col items-center justify-center p-space-lg rounded-2xl bg-surface-container-low min-h-[380px] relative overflow-hidden">
+<!-- Visual SVG Diagnostic Diagram -->
+<div class="relative w-72 h-72 flex items-center justify-center">
+<!-- Jaw Bone Bed -->
+<div class="absolute bottom-6 w-56 h-32 rounded-b-3xl bg-surface-container-high flex items-end justify-center p-2">
+<span class="font-label-sm text-label-sm text-secondary">Alveolar Bone Bed</span>
+</div>
+<!-- Implant Post Graphic Dynamic -->
+<div class="absolute bottom-16 w-12 h-28 bg-gradient-to-b from-outline to-on-surface-variant rounded-md flex flex-col items-center justify-around py-2 transition-all duration-700 shadow-md" id="implantFixture">
+<div class="w-10 h-1 bg-surface-container"></div>
+<div class="w-10 h-1 bg-surface-container"></div>
+<div class="w-10 h-1 bg-surface-container"></div>
+<div class="w-10 h-1 bg-surface-container"></div>
+<div class="w-8 h-1 bg-surface-container"></div>
+<span class="text-[10px] text-surface font-mono">Ti-64</span>
+</div>
+<!-- Abutment and Crown -->
+<div class="absolute top-10 w-24 h-24 rounded-t-3xl rounded-b-lg bg-surface-container-lowest shadow-2xl flex flex-col items-center justify-center transition-all duration-700 opacity-0 translate-y-[-30px]" id="implantCrown">
+<span class="material-symbols-outlined text-primary text-[32px]">dentistry</span>
+<span class="font-label-caps text-[9px] text-primary">CEREC ZIRCONIA</span>
+</div>
+</div>
+<div class="absolute top-4 left-4 flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-primary animate-ping"></span>
+<span class="font-label-caps text-label-caps text-primary" id="implantStageTitle">STAGE 1 / 4: TOOTH BED EXTRACTION &amp; SANITIZATION</span>
+</div>
+</div>
+<div class="lg:col-span-5 flex flex-col gap-space-md">
+<span class="font-label-caps text-label-caps text-primary">SURGICAL SEQUENCE NAVIGATION</span>
+<h3 class="font-headline-md text-headline-md text-on-surface font-bold" id="implantHeadline">1. Minimally Invasive Site Prep</h3>
+<p class="font-body-md text-body-md text-on-surface-variant" id="implantDesc">The compromised tooth root is delicately removed with zero bone trauma. Ultrasonic piezosurgery dispatches cavitation waves to sterilize the biological pocket.</p>
+<div class="flex flex-col gap-2 pt-space-xs">
+<div class="flex gap-2">
+<button class="imp-step-btn flex-1 py-2 rounded-xl font-label-sm text-label-sm bg-primary text-on-primary font-bold" id="impBtn-1" onclick="setImplantStage(1)">1. Extract</button>
+<button class="imp-step-btn flex-1 py-2 rounded-xl font-label-sm text-label-sm bg-surface-container-high text-on-surface" id="impBtn-2" onclick="setImplantStage(2)">2. Fixture</button>
+<button class="imp-step-btn flex-1 py-2 rounded-xl font-label-sm text-label-sm bg-surface-container-high text-on-surface" id="impBtn-3" onclick="setImplantStage(3)">3. Osseo</button>
+<button class="imp-step-btn flex-1 py-2 rounded-xl font-label-sm text-label-sm bg-surface-container-high text-on-surface" id="impBtn-4" onclick="setImplantStage(4)">4. Crown</button>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm pt-2">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px] text-primary">check</span> 3D CBCT Navigated</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px] text-primary">speed</span> 35 N/cm Torque</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Simulation 2: Teeth Alignment Progression -->
+<div class="sim-panel hidden grid-cols-1 lg:grid-cols-12 gap-gutter items-center" id="simView-align">
+<div class="lg:col-span-7 flex flex-col items-center justify-center p-space-lg rounded-2xl bg-surface-container-low min-h-[380px] relative">
+<div class="flex items-center justify-center gap-3 py-10">
+<!-- Tooth Arch Vector Demo -->
+<div class="w-12 h-20 bg-surface-container-lowest shadow-md rounded-2xl flex items-center justify-center transition-all duration-700 rotate-[-18deg] translate-y-3" id="alignTooth1">
+<span class="text-xs font-bold text-secondary">#7</span>
+</div>
+<div class="w-14 h-24 bg-surface-container-lowest shadow-md rounded-2xl flex items-center justify-center transition-all duration-700 rotate-[12deg] -translate-y-2" id="alignTooth2">
+<span class="text-xs font-bold text-secondary">#8</span>
+</div>
+<div class="w-14 h-24 bg-surface-container-lowest shadow-md rounded-2xl flex items-center justify-center transition-all duration-700 rotate-[-8deg] translate-y-1" id="alignTooth3">
+<span class="text-xs font-bold text-secondary">#9</span>
+</div>
+<div class="w-12 h-20 bg-surface-container-lowest shadow-md rounded-2xl flex items-center justify-center transition-all duration-700 rotate-[16deg] translate-y-4" id="alignTooth4">
+<span class="text-xs font-bold text-secondary">#10</span>
+</div>
+</div>
+<div class="w-full max-w-md flex flex-col gap-2 mt-4">
+<div class="flex justify-between font-label-sm text-label-sm text-on-surface">
+<span>Week 0 (Crowded)</span>
+<span class="text-primary font-bold" id="alignWeekLabel">Week 18 Harmonious Arch</span>
+</div>
+<input class="w-full accent-primary cursor-pointer" id="alignSlider" max="100" min="0" oninput="updateAlignment(this.value)" type="range" value="0"/>
+</div>
+</div>
+<div class="lg:col-span-5 flex flex-col gap-space-md">
+<span class="font-label-caps text-label-caps text-primary">BIOMECHANICAL ARCH EXPANSION</span>
+<h3 class="font-headline-md text-headline-md text-on-surface font-bold">Continuous Gentle Vectors</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Drag the week timeline slider above to witness the digital de-crowding progression. Controlled 0.25mm force intervals preserve root pulp vitality while establishing flawless arch symmetry.</p>
+<div class="p-space-sm rounded-xl bg-surface-container-low flex flex-col gap-1">
+<span class="font-label-sm text-label-sm font-bold text-on-surface">Estimated Duration: 14 to 22 Weeks</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Zero metal brackets. 100% biocompatible clear thermoplastic tracking.</span>
+</div>
+</div>
+</div>
+<!-- Simulation 3: Clear Aligner Micro-Vectors -->
+<div class="sim-panel hidden grid-cols-1 lg:grid-cols-12 gap-gutter items-center" id="simView-tray">
+<div class="lg:col-span-7 flex flex-col items-center justify-center p-space-lg rounded-2xl bg-surface-container-low min-h-[380px] relative">
+<div class="relative w-64 h-64 flex items-center justify-center">
+<!-- Simulated Tooth -->
+<div class="w-28 h-36 bg-surface-container-lowest rounded-3xl shadow-xl flex flex-col items-center justify-center p-2 relative">
+<!-- SmartForce Attachment -->
+<div class="w-4 h-4 rounded-sm bg-primary/40 absolute top-8 right-3 animate-pulse"></div>
+<span class="material-symbols-outlined text-[36px] text-primary">dentistry</span>
+<span class="font-label-caps text-[10px] text-secondary mt-1">LATERAL INCISOR</span>
+</div>
+<!-- Translucent Aligner Overlay -->
+<div class="absolute w-36 h-44 rounded-[2rem] bg-secondary-container/40 backdrop-blur-sm border-2 border-primary/30 flex items-center justify-center transition-all duration-500 scale-100" id="trayOverlay">
+<span class="font-label-caps text-label-caps text-primary font-bold">SMARTTRACK TRAY #12</span>
+</div>
+</div>
+<button class="mt-4 px-space-md py-2 rounded-full bg-primary text-on-primary font-label-sm text-label-sm shadow-md" onclick="toggleTraySnap()">
+            Simulate Tray Insertion &amp; Force Vectors
+          </button>
+</div>
+<div class="lg:col-span-5 flex flex-col gap-space-md">
+<span class="font-label-caps text-label-caps text-primary">ATTACHMENT VECTOR TECHNOLOGY</span>
+<h3 class="font-headline-md text-headline-md text-on-surface font-bold">SmartForce Micro-Points</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Custom composite geometric anchors placed on tooth surfaces guide exact 3-dimensional rotational forces that standard clear trays cannot execute alone.</p>
+<div class="flex items-center gap-space-xs text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-primary text-[18px]">verified</span>
+<span>22 Hours/Day Wear • Trays switch every 7 days</span>
+</div>
+</div>
+</div>
+<!-- Simulation 4: Tooth Ceramic Restoration & Curing -->
+<div class="sim-panel hidden grid-cols-1 lg:grid-cols-12 gap-gutter items-center" id="simView-cure">
+<div class="lg:col-span-7 flex flex-col items-center justify-center p-space-lg rounded-2xl bg-surface-container-low min-h-[380px] relative">
+<div class="relative w-56 h-56 flex flex-col items-center justify-center">
+<!-- Tooth body -->
+<div class="w-32 h-40 bg-surface-container-lowest rounded-3xl shadow-lg relative flex flex-col items-center pt-4">
+<!-- Enamel preparation crater -->
+<div class="w-16 h-8 rounded-lg bg-yellow-100 transition-colors duration-1000 flex items-center justify-center text-[10px] text-outline font-mono" id="compositeLayer">
+                UNCURED
+              </div>
+</div>
+<!-- Blue Curing Light Beam -->
+<div class="absolute -top-6 w-20 h-40 bg-gradient-to-b from-primary via-tertiary-fixed-dim/70 to-transparent opacity-0 transition-opacity duration-500 pointer-events-none rounded-full blur-md" id="curingBeam"></div>
+</div>
+<button class="mt-4 px-space-md py-2 rounded-full bg-primary text-on-primary font-label-sm text-label-sm shadow-md flex items-center gap-1" onclick="activateCuringLight()">
+<span class="material-symbols-outlined text-[18px]">wb_incandescent</span>
+<span>Activate 1200mW LED Curing Wand</span>
+</button>
+</div>
+<div class="lg:col-span-5 flex flex-col gap-space-md">
+<span class="font-label-caps text-label-caps text-primary">PHOTO-POLYMERIZATION</span>
+<h3 class="font-headline-md text-headline-md text-on-surface font-bold">Nano-Ceramic Hybrid Bond</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Press the curing wand above to trigger high-intensity blue light photo-initiators, cross-linking monomer chains into an adamantine structure matching natural tooth enamel hardness.</p>
+<span class="font-label-sm text-label-sm text-secondary" id="curingStatus">Awaiting Photopolymerization Trigger</span>
+</div>
+</div>
+<!-- Simulation 5: Rotary Root Canal -->
+<div class="sim-panel hidden grid-cols-1 lg:grid-cols-12 gap-gutter items-center" id="simView-root">
+<div class="lg:col-span-7 flex flex-col items-center justify-center p-space-lg rounded-2xl bg-surface-container-low min-h-[380px] relative">
+<div class="relative w-48 h-64 flex flex-col items-center justify-center">
+<div class="w-36 h-52 bg-surface-container-lowest rounded-t-3xl rounded-b-xl shadow-lg relative overflow-hidden flex flex-col items-center">
+<span class="font-label-caps text-[10px] text-secondary mt-2">MOLAR CANAL</span>
+<!-- Canal Canal Lines -->
+<div class="w-2 h-36 bg-red-400 mt-2 rounded-full transition-all duration-700" id="rootCanalPulp"></div>
+</div>
+<!-- Rotary Instrument Needle -->
+<div class="absolute -top-10 w-1 h-36 bg-outline-variant transition-all duration-700" id="rotaryTool"></div>
+</div>
+<div class="flex gap-2 mt-4">
+<button class="px-space-sm py-1.5 rounded-full bg-primary text-on-primary font-label-sm text-label-sm" onclick="stepRootCanal('clean')">Cleanse Canal</button>
+<button class="px-space-sm py-1.5 rounded-full bg-secondary-container text-primary font-label-sm text-label-sm" onclick="stepRootCanal('seal')">Gutta-Percha Seal</button>
+</div>
+</div>
+<div class="lg:col-span-5 flex flex-col gap-space-md">
+<span class="font-label-caps text-label-caps text-primary">ENDODONTIC ROTARY PRECISION</span>
+<h3 class="font-headline-md text-headline-md text-on-surface font-bold" id="rcTitle">Rotary Canal Shaping</h3>
+<p class="font-body-md text-body-md text-on-surface-variant" id="rcDesc">Flexible nickel-titanium motorized instruments gently clear necrotic pulp along curved micro-canals with automated electronic apex sensor feedback.</p>
+<div class="flex items-center gap-space-xs text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px] text-primary">task_alt</span>
+<span>100% Painless Micro-Debridement Protocol</span>
+</div>
+</div>
+</div>
+</div>

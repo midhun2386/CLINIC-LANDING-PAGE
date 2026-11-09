@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hero</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#0a0a0a;
+  --black-surface:#1a1a1a;
+  --black-card:#1e1e1e;
+  --green:#00c853;
+  --green-light:#00e676;
+  --green-dark:#009624;
+  --gold:#d4af37;
+  --gold-bright:#ffd700;
+  --gold-muted:#c8a960;
+  --text-primary:#f0f0f0;
+  --text-secondary:#b0b0b0;
+  --text-muted:#808080;
+  --border:#2a2a2a;
+}
+
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:#111111}
+::-webkit-scrollbar-thumb{background:#333;border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:#00c853}
+::selection{background:#00c853;color:#0a0a0a}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#0a0a0a;background:#0a0a0a;color:#e0e0e0}
+.hero-track{position:relative;width:100%;height:280vh}
+.hero-track .hero{position:sticky;top:0;width:1280px;height:100vh;max-height:942px;min-height:720px;margin:0 auto;padding:92px 80px 36px;display:flex;flex-direction:column;justify-content:space-between;background:linear-gradient(to bottom,#0a0a0a,#111111 50%,#0a0a0a);z-index:10;overflow:hidden}
+.blob{position:absolute;border-radius:9999px;pointer-events:none}
+.blob-a{left:50%;transform:translateX(-50%);width:700px;top:-12.15%;bottom:37.85%;background:rgba(0,200,83,.1);filter:blur(140px)}
+.blob-b{right:40px;bottom:40px;width:450px;height:450px;background:rgba(196,231,255,.3);filter:blur(120px)}
+.canvas{position:absolute;inset:0;overflow:hidden;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:1}
+#heroCanvas{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:100%;height:100%;max-width:1280px;object-fit:contain;pointer-events:auto;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;mask-image:radial-gradient(ellipse 65% 58% at 50% 50%,#000 55%,transparent 100%);-webkit-mask-image:radial-gradient(ellipse 65% 58% at 50% 50%,#000 55%,transparent 100%);transition:filter .3s ease}
+#heroCanvas:active{cursor:grabbing}
+.hero>.rel{position:relative;z-index:2;pointer-events:none}
+.hero>.rel a,.hero>.rel button,.hero>.rel input,.hero>.rel .pill,.hero>.rel .status,.hero>.rel .modes,.hero>.rel .hint{pointer-events:auto}
+/* top bar */
+.topbar{display:flex;flex-wrap:wrap;gap:12px 0;align-items:center;justify-content:space-between;padding-top:6px;width:100%}
+.status{display:flex;gap:6px;align-items:center;padding:6px 12px;border-radius:9999px;background:rgba(20,20,20,.85);backdrop-filter:blur(12px);box-shadow:0 1px 2px rgba(0,0,0,.05)}
+.dot{width:8px;height:8px;border-radius:9999px;background:#00c853}
+.t12{font-size:12px;line-height:14.4px;white-space:nowrap}
+.live{font-weight:700;color:#00c853;letter-spacing:.6px}
+.loc{font-weight:500;color:#b0b0b0;letter-spacing:.24px}
+.modes{display:flex;align-items:center;padding:4px;border-radius:9999px;background:rgba(236,238,240,.9);backdrop-filter:blur(16px);box-shadow:0 1px 2px rgba(0,0,0,.05)}
+.mode{border:0;background:none;font:500 12px/14.4px 'Plus Jakarta Sans',sans-serif;letter-spacing:.24px;color:#b0b0b0;padding:5px 12px 6.39px;border-radius:9999px;cursor:pointer;white-space:nowrap;transition:all .2s ease}
+.mode.on{background:#d4af37;color:#0a0a0a}
+/* main */
+.main{display:flex;flex-direction:column;justify-content:center;flex:1;min-height:446.53px;padding:40px 0;width:100%}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;grid-template-rows:446.53px;width:100%}
+.left{grid-column:1/span 7;max-width:672px;display:flex;flex-direction:column;gap:20px;align-items:flex-start;align-self:center}
+.right{grid-column:8/span 5;display:flex;flex-direction:column;gap:20px;align-items:flex-end;align-self:center}
+.badge{display:flex;gap:6px;align-items:center;padding:4px 12px;border-radius:9999px;background:rgba(212,175,55,.12);color:#00c853;font-weight:700;font-size:12px;line-height:14.4px;letter-spacing:1.2px;white-space:nowrap}
+.badge img{width:15.067px;height:15.067px}
+h1{font-weight:700;font-size:72px;line-height:75.6px;letter-spacing:-1.8px;color:#f0f0f0;width:100%}
+h1 span{display:block}
+h1 .grad{background:linear-gradient(135deg,#d4af37,#ffd700,#c8a960);linear-gradient(to right,#1a1a1a,#222222,#1a1a1a);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{width:576px;max-width:576px;font-size:18px;line-height:29.25px;letter-spacing:-.09px;color:#b0b0b0;white-space:nowrap}
+.ctas{display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding-top:6px;width:100%}
+.btn{display:flex;gap:6px;align-items:center;justify-content:center;padding:12px 32px;border-radius:9999px;font-weight:600;font-size:14px;line-height:17.5px;letter-spacing:.14px;text-decoration:none;white-space:nowrap}
+.btn.primary{background:#d4af37;color:#0a0a0a;box-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.1)}
+.btn.primary img{width:13.5px;height:15px}
+.btn.secondary{gap:6.01px;background:rgba(26,26,26,.92);color:#f0f0f0;box-shadow:0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -2px rgba(0,0,0,.1)}
+.btn.secondary img{width:12px;height:12px}
+.pill{display:flex;gap:12px;align-items:center;max-width:320px;padding:12px 20px;border-radius:16px;background:rgba(255,255,255,.85);backdrop-filter:blur(24px);box-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1)}
+.pill-m{max-width:352px;padding-right:32px;display:flex;flex-direction:column}
+.ico{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pill .n{font-weight:700;font-size:22px;line-height:22px;letter-spacing:-.33px;color:#f0f0f0;white-space:nowrap}
+.pill .c{font-weight:500;font-size:12px;line-height:14.4px;letter-spacing:.24px;color:#b0b0b0;padding-top:3px}
+.pill .h{font-weight:700;font-size:14px;line-height:17.5px;letter-spacing:.14px;color:#f0f0f0;white-space:nowrap}
+.pill .s{font-weight:500;font-size:12px;line-height:14.4px;letter-spacing:.24px;color:#b0b0b0;white-space:nowrap}
+/* bottom */
+.bottom{display:flex;align-items:center;justify-content:space-between;padding-top:20px;width:100%}
+.hint{display:flex;gap:6px;align-items:center;font-weight:500;color:#b0b0b0;letter-spacing:.24px}
+.hint img{width:11.55px;height:14px}
+.scroll{display:flex;gap:8px;align-items:center;font-weight:700;color:#909090;letter-spacing:1.68px;text-decoration:none}
+.track{width:20px;height:32px;padding:4px;border-radius:9999px;background:#222222;display:flex;justify-content:center;align-items:flex-start}
+.track i{width:6px;height:8px;border-radius:9999px;background:#00c853}
+
+/* stats (4:773) */
+.stats{width:1280px;margin:0 auto;background:#1a1a1a;padding:56px 80px;filter:drop-shadow(0 1px 1px rgba(0,0,0,.05))}
+.stats-in{display:flex;gap:24px;align-items:flex-start;justify-content:center;width:100%}
+.sc{flex:1 0 0;min-width:1px;background:#111111;border-radius:16px;padding:32px}
+.sc-top{display:flex;align-items:center;justify-content:space-between;padding-bottom:12px;width:100%}
+.sc-ico{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center}
+.sc-ico img{width:21.667px;height:21.667px}
+.sc-tag{background:#1a1a1a;border-radius:9999px;padding:1px 6px 2.39px;font-weight:700;font-size:12px;line-height:14.4px;letter-spacing:1.68px;color:#00c853;white-space:nowrap}
+.sc-big{font-weight:700;font-size:48px;line-height:55.2px;letter-spacing:-1.2px;color:#d4af37;width:100%}
+.sc-title{padding-top:2.845px;padding-bottom:.535px;font-weight:600;font-size:22px;line-height:29.7px;letter-spacing:-.33px;color:#f0f0f0;width:100%}
+.sc-text{padding-top:8px;font-weight:400;font-size:14px;line-height:21px;letter-spacing:.07px;color:#b0b0b0;width:100%}
+.sc-rate{position:relative;height:55.19px;width:100%}
+.sc-rate .v{position:absolute;left:0;top:0;font-weight:700;font-size:48px;line-height:55.2px;letter-spacing:-1.2px;color:#f0f0f0;white-space:nowrap}
+.sc-rate .stars{position:absolute;left:86.06px;top:27px;display:flex}
+.sc-rate .stars img{width:16.667px;height:15.833px;display:block}
+
+/* narrative (4:95) */
+
+/* --- Narrative Section: Doctor & Clinic Sanctuary --- */
+.nar{width:1280px;margin:0 auto;background:#0a0a0a;padding:64px 80px}
+.nar-grid{display:grid;grid-template-columns:5fr 7fr;gap:56px;align-items:center;width:100%}
+
+.nar-l{position:relative;display:flex;flex-direction:column;width:100%}
+.under{position:absolute;right:-20px;top:-20px;width:140px;height:140px;border-radius:9999px;background:rgba(212,175,55,.12);filter:blur(30px);pointer-events:none}
+.port{position:relative;width:100%;background:#e2e8f0;border-radius:24px;overflow:hidden;box-shadow:0 25px 50px -12px rgba(0,0,0,.15);border:1px solid #2a2a2a}
+.port .ph{position:relative;height:560px;width:100%}
+.port .ph div{position:absolute;inset:0;overflow:hidden}
+.port .ph img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
+.fcard{position:absolute;bottom:20px;left:20px;right:20px;display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-radius:18px;background:rgba(26,26,26,.94);backdrop-filter:blur(24px);box-shadow:0 12px 24px rgba(0,0,0,.08);border:1px solid rgba(212,175,55,.2)}
+.fcard .in{display:flex;flex-direction:column;gap:3px}
+.fcard .nm{font-weight:700;font-size:20px;line-height:26px;color:#f0f0f0}
+.fcard .cr{font-weight:700;font-size:11px;line-height:14px;letter-spacing:1.4px;color:#00c853}
+.fcard .rl{font-size:13px;line-height:18px;color:#b0b0b0}
+.fcard .bd{width:44px;height:44px;border-radius:9999px;background:#00c853;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 10px rgba(0,200,83,.3)}
+.fcard .bd img{width:16px;height:20px}
+
+.nar-r{display:flex;flex-direction:column;gap:20px;width:100%}
+.nar-tag{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:9999px;background:#1a1a1a;font-weight:700;font-size:11px;line-height:14px;letter-spacing:1.4px;color:#00c853;width:fit-content}
+.nar-tag img{width:14px;height:14px}
+.nar-h2{font-weight:700;font-size:40px;line-height:48px;letter-spacing:-1px;color:#f0f0f0;margin:0}
+.nar-h2 span{display:block;color:#d4af37}
+.nar-p{font-size:16px;line-height:26px;color:#b0b0b0;margin:0}
+
+.bento{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;width:100%}
+.bc{display:flex;gap:14px;align-items:flex-start;padding:18px;border-radius:16px;background:#1a1a1afff;border:1px solid #2a2a2a;box-shadow:0 2px 6px rgba(0,0,0,.03);transition:transform .2s,box-shadow .2s}
+.bc:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.06)}
+.bc .bi{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.bc .bt{display:flex;flex-direction:column;gap:3px;flex:1}
+.bc h4{font-weight:600;font-size:14px;line-height:18px;color:#f0f0f0;margin:0}
+.bc p{font-size:13px;line-height:19px;color:#b0b0b0;margin:0}
+
+.creds{display:flex;flex-wrap:wrap;gap:20px;align-items:center;padding-top:6px}
+.cred{display:flex;align-items:center;gap:6px;font-weight:600;font-size:13px;color:#b0b0b0}
+.cred img{width:16px;height:16px}
+
+/* services (4:178) */
+.svc{width:1280px;margin:0 auto;background:#111111;padding:56px 80px;display:flex;flex-direction:column;gap:56px}
+.svc-head{display:flex;align-items:flex-end;justify-content:space-between;width:100%}
+.svc-l{position:relative;width:576px;max-width:576px;height:187.95px;flex-shrink:0}
+.svc-l .k{position:absolute;left:0;right:0;top:-1px;font-weight:700;font-size:12px;line-height:14.4px;letter-spacing:1.2px;color:#00c853;white-space:nowrap}
+.svc-l h2{position:absolute;left:0;right:0;top:20.39px;font-weight:700;font-size:48px;line-height:55.2px;letter-spacing:-1.2px;color:#f0f0f0;white-space:nowrap}
+.svc-l p{position:absolute;left:0;right:0;top:136.07px;font-size:16px;line-height:25.6px;color:#b0b0b0;white-space:nowrap}
+.svc-note{font-weight:500;font-size:12px;line-height:14.4px;letter-spacing:.24px;color:#909090;white-space:nowrap}
+.svc-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;width:100%}
+.scard{align-self:start;display:flex;flex-direction:column;background:#1a1a1a;border-radius:24px;overflow:clip;box-shadow:0 1px 2px rgba(0,0,0,.05);isolation:isolate}
+.scard .im{position:relative;height:224px;width:100%;overflow:clip;z-index:2}
+.scard .im>div{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.scard .im img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;max-width:none}
+.scard .tg{position:absolute;left:16px;top:16px;padding:3px 6px 4.39px;border-radius:9999px;background:rgba(26,26,26,.92);backdrop-filter:blur(12px);font-weight:700;font-size:12px;line-height:14.4px;letter-spacing:1.68px;color:#00c853;white-space:nowrap}
+.scard .pn{position:absolute;right:16px;bottom:16px;height:22.39px;display:flex;align-items:center;padding:0 6px 0 18px;border-radius:9999px;background:rgba(247,249,251,.9);backdrop-filter:blur(12px);font-weight:600;font-size:12px;line-height:14.4px;letter-spacing:.24px;color:#f0f0f0;white-space:nowrap}
+.scard .pn i{position:absolute;left:6px;top:50%;transform:translateY(-50%);width:8px;height:8px;border-radius:9999px}
+.scard .bd{display:flex;flex-direction:column;gap:20px;padding:20px;width:100%;z-index:1}
+.scard .tp{display:flex;flex-direction:column;gap:6px;width:100%}
+.scard .rw{display:flex;align-items:center;justify-content:space-between;width:100%}
+.scard h3{font-weight:700;font-size:22px;line-height:29.7px;letter-spacing:-.33px;color:#f0f0f0;white-space:nowrap}
+.scard .du{font-weight:500;font-size:12px;line-height:14.4px;letter-spacing:.24px;color:#909090;white-space:nowrap}
+.scard .ds{font-size:14px;line-height:21px;letter-spacing:.07px;color:#b0b0b0}
+.scard .ft{display:flex;align-items:center;justify-content:space-between;padding:6px;border-radius:12px;background:#111111;width:100%}
+.scard .ft b{font-weight:600;font-size:12px;line-height:14.4px;letter-spacing:.24px;color:#00c853;white-space:nowrap}
+.scard .ft a{display:flex;gap:4px;align-items:center;font-weight:500;font-size:12px;line-height:14.4px;letter-spacing:.24px;color:#f0f0f0;text-decoration:none;white-space:nowrap}
+.scard .ft a img{width:10.667px;height:10.667px}
+
+/* lab (4:416) */
+
+/* --- Interactive Procedural Lab --- */
+.lab{width:1280px;margin:0 auto;background:#0a0a0a;padding:56px 80px;display:flex;flex-direction:column;gap:32px;align-items:center}
+.lab-h{display:flex;flex-direction:column;align-items:center;width:768px;max-width:768px;text-align:center}
+.lab-tag{display:flex;gap:6px;align-items:center;padding:4px 12px;border-radius:9999px;background:rgba(212,175,55,.12);font-weight:700;font-size:12px;line-height:14.4px;letter-spacing:1.2px;color:#00c853;white-space:nowrap;margin-bottom:6px}
+.lab-tag img{width:14px;height:14px}
+.lab-h h2{font-weight:700;font-size:48px;line-height:55.2px;letter-spacing:-1.2px;color:#f0f0f0;white-space:nowrap}
+.lab-h p{padding:7.3px 26.61px 0;font-size:16px;line-height:25.6px;color:#b0b0b0;white-space:nowrap}
+.lab-tabs{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;padding-top:16px;width:100%}
+.ltab{border:0;cursor:pointer;font:600 13px/16px 'Plus_Jakarta_Sans',sans-serif;letter-spacing:.2px;padding:8px 22px;border-radius:9999px;background:#222222;color:#b0b0b0;transition:all .25s ease}
+.ltab:hover{background:#2a2a2a;color:#f0f0f0}
+.ltab.on{background:#d4af37;color:#0a0a0a;box-shadow:0 4px 16px rgba(0,200,83,.3)}
+
+.stage{position:relative;width:1024px;max-width:1024px;padding:44px;border-radius:24px;background:#1a1a1a;box-shadow:0 20px 25px -5px rgba(0,0,0,.08),0 8px 10px -6px rgba(0,0,0,.05);border:1px solid #2a2a2a}
+.sim-panel{display:none;width:100%}
+.sim-panel.on{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:32px;align-items:center}
+
+.st-l{grid-column:1/span 7;position:relative;min-height:380px;padding:24px;border-radius:18px;background:linear-gradient(135deg,#1a1a1a 0%,#111111 100%);border:1px solid #2a2a2a;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.st-s{position:absolute;left:18px;top:18px;display:flex;gap:8px;align-items:center;font-weight:700;font-size:11px;line-height:14px;letter-spacing:1.4px;color:#00c853;background:rgba(26,26,26,.92);padding:6px 14px;border-radius:9999px;box-shadow:0 2px 6px rgba(0,0,0,.06);z-index:5}
+.st-s .beacon{width:8px;height:8px;border-radius:9999px;background:#00c853;animation:pulseBeacon 2s infinite}
+@keyframes pulseBeacon{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.3)}}
+
+.sim-stage-img{width:100%;max-width:380px;height:260px;object-fit:contain;transition:opacity .35s ease,transform .35s ease}
+
+/* Tooth Arch Vector Demo (simView-align) */
+.align-teeth-wrap{display:flex;align-items:center;justify-content:center;gap:12px;height:180px;width:100%}
+.align-tooth{background:#1a1a1afff;border:1.5px solid #cbd5e1;border-radius:14px;box-shadow:0 6px 16px rgba(0,0,0,.08);display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;transition:transform .4s cubic-bezier(.4,0,.2,1);padding:6px}
+.align-tooth .t-bracket{width:14px;height:12px;background:#00c853;border-radius:3px;box-shadow:0 0 0 2px #ffffff,0 2px 4px rgba(0,200,83,.4);position:relative}
+.align-tooth .t-bracket::after{content:'';position:absolute;top:5px;left:-16px;right:-16px;height:2px;background:#00e676}
+.align-tooth .t-lbl{font-size:10px;font-weight:700;color:#64748b;margin-top:8px}
+
+.st-r{grid-column:8/span 5;display:flex;flex-direction:column;justify-content:center;gap:14px}
+.st-r .k{font-weight:700;font-size:12px;line-height:14.4px;letter-spacing:1.68px;color:#00c853}
+.st-r h3{font-weight:700;font-size:28px;line-height:34px;letter-spacing:-.5px;color:#f0f0f0;margin:0}
+.st-r p{font-size:15px;line-height:24px;color:#b0b0b0;margin:0}
+.st-b{display:flex;flex-direction:column;gap:12px;padding-top:8px}
+.st-btns{display:flex;gap:8px;align-items:center;width:100%}
+.sbtn{flex:1 0 0;min-width:1px;border:0;cursor:pointer;padding:8px 0;border-radius:12px;background:#222222;color:#f0f0f0;font:600 12px/14.4px 'Plus_Jakarta_Sans',sans-serif;letter-spacing:.2px;text-align:center;transition:all .2s ease}
+.sbtn:hover{background:#2a2a2a}
+.sbtn.on{background:#d4af37;color:#0a0a0a;box-shadow:0 4px 10px rgba(0,200,83,.25)}
+.st-m{display:flex;align-items:center;justify-content:space-between;padding-top:6px;width:100%}
+.st-m span{display:flex;gap:6px;align-items:center;font-weight:600;font-size:12px;line-height:14.4px;color:#b0b0b0}
+
+.lab-action-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 20px;border-radius:9999px;background:#d4af37;color:#0a0a0afff;border:0;cursor:pointer;font:600 13px 'Plus_Jakarta_Sans',sans-serif;box-shadow:0 4px 16px rgba(0,200,83,.3);transition:all .2s ease;margin-top:10px}
+.lab-action-btn:hover{background:#004e77;transform:translateY(-1px)}
+
+/* before/after (4:487) */
+.ba{width:1280px;margin:0 auto;background:#1a1a1a;padding:56px 80px;display:flex;flex-direction:column;gap:20px;align-items:center}
+.ba-head{display:flex;align-items:flex-end;justify-content:space-between;width:100%}
+.ba-l{position:relative;width:576px;max-width:576px;height:187.95px;flex-shrink:0}
+.ba-l .k{position:absolute;left:0;right:0;top:-1px;font-weight:700;font-size:12px;line-height:14.4px;letter-spacing:1.2px;color:#00c853;white-space:nowrap}
+.ba-l h2{position:absolute;left:0;right:0;top:20.39px;font-weight:700;font-size:48px;line-height:55.2px;letter-spacing:-1.2px;color:#f0f0f0;white-space:nowrap}
+.ba-l p{position:absolute;left:0;right:0;top:136.07px;font-size:16px;line-height:25.6px;color:#b0b0b0;white-space:nowrap}
+.ba-tabs{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end;align-items:center;width:auto;flex-shrink:0}
+.btab{border:0;cursor:pointer;font:500 12px/14.4px 'Plus Jakarta Sans',sans-serif;letter-spacing:.24px;padding:6px 16px;border-radius:9999px;background:#1a1a1a;color:#b0b0b0;white-space:nowrap;transition:all .2s ease}
+.btab.on{background:#d4af37;color:#0a0a0a;font-weight:600;filter:drop-shadow(0 1px 1px rgba(0,0,0,.05))}
+.cmp{position:relative;width:1024px;max-width:1024px;height:572px;border-radius:24px;overflow:clip;box-shadow:0 25px 50px -12px rgba(0,0,0,.4);flex-shrink:0;touch-action:none;user-select:none;cursor:ew-resize}
+.cmp .after{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.cmp .after img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;max-width:none}
+.cmp .before{position:absolute;top:0;bottom:0;left:0;width:50%;overflow:clip;border-right:3px solid #fff;box-shadow:0 0 25px rgba(0,0,0,.3);box-sizing:border-box}
+.cmp .before .w{position:absolute;left:0;top:0;width:1024px;height:100%;overflow:hidden;pointer-events:none}
+.cmp .before img{position:absolute;inset:0;width:1024px;height:100%;object-fit:cover;object-position:center;max-width:none}
+.cmp .lbl{position:absolute;bottom:24px;padding:12px 20px 9px;border-radius:9999px;font-weight:700;font-size:12px;line-height:14.4px;letter-spacing:1.68px;white-space:nowrap;backdrop-filter:blur(12px);box-shadow:0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -2px rgba(0,0,0,.1);pointer-events:none}
+.cmp .lb{left:24px;background:rgba(0,200,83,.85);color:#e0e0e0}
+.cmp .la{right:24px;background:rgba(26,26,26,.92);color:#00c853}
+.cmp .div{position:absolute;top:0;bottom:0;left:calc(50% - 20px);width:40px;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.cmp .div .hd{width:40px;height:40px;border-radius:9999px;background:#1a1a1a;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 25px rgba(0,0,0,.3);border:2px solid #006194}
+.cmp .div img{width:16.667px;height:10px}
+.ba-strip{display:flex;align-items:center;justify-content:space-between;width:1024px;max-width:1024px;padding:20px;border-radius:16px;background:#111111;flex-shrink:0}
+.ba-strip .g{display:flex;gap:12px;align-items:center}
+.ba-strip .ic{width:40px;height:40px;border-radius:12px;background:rgba(212,175,55,.15);display:flex;align-items:center;justify-content:center}
+.ba-strip .ic img{width:14.667px;height:18.333px}
+.ba-strip h4{font-weight:700;font-size:22px;line-height:29.7px;letter-spacing:-.33px;color:#f0f0f0;white-space:nowrap}
+.ba-strip p{font-size:14px;line-height:21px;letter-spacing:.07px;color:#b0b0b0;white-space:nowrap}
+.ba-strip a{display:flex;gap:6px;align-items:center;padding:8px 20px;border-radius:9999px;background:#d4af37;color:#0a0a0a;font-weight:600;font-size:14px;line-height:17.5px;letter-spacing:.14px;text-decoration:none;white-space:nowrap}
+.ba-strip a img{width:10.667px;height:10.667px}
+
+/* tech (4:535) */
+.tech{width:1280px;margin:0 auto;background:#0a0a0a;padding:56px 80px}
+.tech-g{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:40px;grid-template-rows:702.44px;width:100%}
+.tech-l{grid-column:1/span 5;height:527.08px;position:relative;align-self:center}
+.tech-l .k{position:absolute;left:0;right:0;top:-1px;font-weight:700;font-size:12px;line-height:14.4px;letter-spacing:1.2px;color:#00c853;white-space:nowrap}
+.tech-l h2{position:absolute;left:0;right:0;top:34.39px;font-weight:700;font-size:48px;line-height:55.2px;letter-spacing:-1.2px;color:#f0f0f0;white-space:nowrap}
+.tech-l h2 span{display:block;color:#00c853}
+.tech-l p{position:absolute;left:0;right:0;top:219.34px;font-size:18px;line-height:29.7px;letter-spacing:-.09px;color:#b0b0b0;white-space:nowrap}
+.tech-l .box{position:absolute;left:0;right:0;top:388.39px;display:flex;flex-direction:column;gap:6px;padding:19px 20px 20px;border-radius:16px;background:#111111}
+.tech-l .box h4{font-weight:700;font-size:22px;line-height:29.7px;letter-spacing:-.33px;color:#f0f0f0;padding-bottom:.69px}
+.tech-l .box div{font-size:14px;line-height:21px;letter-spacing:.07px;color:#b0b0b0}
+.tech-r{grid-column:6/span 7;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:275.38px 275.38px 111.69px;gap:20px;align-self:center}
+.feat{align-self:start;display:flex;flex-direction:column;gap:8px;padding:32px;border-radius:24px;background:#1a1a1a;filter:drop-shadow(0 1px 1px rgba(0,0,0,.05))}
+.feat .fi{width:48px;height:48px;border-radius:16px;display:flex;align-items:center;justify-content:center}
+.feat h3{padding:2.845px 0 .535px;font-weight:700;font-size:22px;line-height:29.7px;letter-spacing:-.33px;color:#f0f0f0;width:100%}
+.feat p{font-size:14px;line-height:21px;letter-spacing:.07px;color:#b0b0b0;width:100%}
+.feat5{grid-column:1/span 2;grid-row:3;height:111.69px;display:flex;align-items:center;justify-content:space-between;padding:20px;border-radius:16px;background:#00c853;box-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1)}
+.feat5 .g{display:flex;gap:20px;align-items:center}
+.feat5 .ov{width:48px;height:48px;border-radius:12px;background:rgba(212,175,55,.15);display:flex;align-items:center;justify-content:center}
+.feat5 .tx{position:relative;width:359.16px;height:71.69px}
+.feat5 h3{position:absolute;left:0;right:0;top:-1px;font-weight:700;font-size:22px;line-height:29.7px;letter-spacing:-.33px;color:#fff;white-space:nowrap}
+.feat5 p{position:absolute;left:0;right:0;top:29.69px;font-size:14px;line-height:21px;letter-spacing:.07px;color:rgba(212,175,55,.8);white-space:nowrap}
+.feat5 a{padding:8px 20px;border-radius:9999px;background:#0a0a0a;color:#00c853;font-weight:600;font-size:14px;line-height:17.5px;letter-spacing:.14px;text-decoration:none;white-space:nowrap}
+
+/* booking (4:595) */
+.bk{width:1280px;margin:0 auto;background:#111111;padding:56px 192px}
+.bk-card{width:100%;max-width:896px;background:#1a1a1a;border-radius:24px;overflow:clip;box-shadow:0 25px 50px -12px rgba(0,0,0,.4)}
+.bk-top{display:flex;align-items:center;justify-content:space-between;padding:32px;width:100%;background:linear-gradient(to right,#1a1a1a,#222222,#1a1a1a)}
+.bk-tt{position:relative;width:459.35px;height:79.39px;flex-shrink:0}
+.bk-tt .k{position:absolute;left:0;top:-1px;font-weight:700;font-size:12px;line-height:14.4px;letter-spacing:1.68px;color:rgba(212,175,55,.8);white-space:nowrap}
+.bk-tt h2{position:absolute;left:0;top:14.39px;font-weight:700;font-size:32px;line-height:40px;letter-spacing:-.8px;color:#fff;white-space:nowrap}
+.bk-tt p{position:absolute;left:0;right:0;top:58.39px;font-size:14px;line-height:21px;letter-spacing:.07px;color:rgba(255,255,255,.9)}
+.bk-sec{padding:3px 12px 4.39px;border-radius:9999px;background:rgba(212,175,55,.15);backdrop-filter:blur(12px);font-weight:500;font-size:12px;line-height:14.4px;letter-spacing:.24px;color:#fff;white-space:nowrap}
+.bk-form{position:relative;height:565.13px;width:100%}
+.bk-g{position:absolute;left:56px;right:56px;top:56px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:67.98px 67.98px 69.98px;gap:20px}
+.fld{display:flex;flex-direction:column;gap:4px;align-self:start}
+.fld>label,.fld .lb{font-weight:600;font-size:12px;line-height:14.4px;letter-spacing:.24px;color:#f0f0f0}
+.inp{width:100%;height:48.59px;padding:0 20px;border:0;outline:0;border-radius:12px;background:#111111;box-shadow:0 1px 2px rgba(0,0,0,.05);font:400 16px/normal 'Plus_Jakarta_Sans',sans-serif;color:#f0f0f0}
+.inp::placeholder{color:#666666;opacity:1}
+.phn{display:flex;gap:8px;align-items:stretch}
+.sel{appearance:none;-webkit-appearance:none;border:0;outline:0;border-radius:12px;background:#111111;font:400 16px/21px 'Plus_Jakarta_Sans',sans-serif;color:#f0f0f0;cursor:pointer}
+.sel.cc{width:122px;padding:12px 28px 12px 16px}
+.sel.tr{width:100%;padding:12px 36px 12px 24px;height:47px;filter:drop-shadow(0 1px 1px rgba(0,0,0,.05))}
+.dte{width:100%;height:52px;padding:12px 20px;border:0;outline:0;border-radius:12px;background:#111111;box-shadow:0 1px 2px rgba(0,0,0,.05);font:400 16px/25.6px 'Plus_Jakarta_Sans',sans-serif;color:#f0f0f0}
+.tw{display:flex;gap:8px;justify-content:center;width:100%}
+.tw label{flex:1 0 0;min-width:1px;cursor:pointer}
+.tw input{position:absolute;opacity:0;pointer-events:none}
+.tw span{display:flex;align-items:center;justify-content:center;padding:11px 12px 12.39px;border-radius:12px;background:#111111;color:#f0f0f0;font-weight:600;font-size:12px;line-height:14.4px;letter-spacing:.24px;white-space:nowrap}
+.tw input:checked+span{background:#d4af37;color:#0a0a0a}
+.bk-msg{position:absolute;left:56px;right:56px;top:320.95px;display:flex;flex-direction:column;gap:4px}
+.bk-msg label{font-weight:600;font-size:12px;line-height:14.4px;letter-spacing:.24px;color:#f0f0f0}
+.bk-msg textarea{width:100%;height:101.19px;padding:12px 20px;border:0;outline:0;resize:none;border-radius:12px;background:#111111;box-shadow:0 1px 2px rgba(0,0,0,.05);font:400 16px/25.6px 'Plus_Jakarta_Sans',sans-serif;color:#f0f0f0}
+.bk-msg textarea::placeholder{color:#666666;opacity:1}
+.bk-act{position:absolute;left:56px;right:56px;top:461.13px;padding-top:6px;display:flex;align-items:center;justify-content:space-between}
+.bk-act .n{display:flex;gap:8px;align-items:center;font-weight:500;font-size:12px;line-height:14.4px;letter-spacing:.24px;color:#b0b0b0;white-space:nowrap}
+.bk-act .n img{width:12px;height:15.75px}
+.bk-btn{background:#d4af37 !important;color:#0a0a0a !important;display:flex;gap:6px;align-items:center;justify-content:center;padding:12px 56px;border:0;border-radius:9999px;background:#d4af37;color:#0a0a0a;cursor:pointer;font:600 14px/17.5px 'Plus_Jakarta_Sans',sans-serif;letter-spacing:.14px;white-space:nowrap;box-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.1)}
+.bk-btn img{width:14.25px;height:12px}
+
+/* contact (4:680) */
+.ct{width:1280px;margin:0 auto;background:#0a0a0a;padding:56px 80px}
+.ct-g{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;grid-template-rows:608.44px;width:100%}
+.ct-l{grid-column:1/span 6;display:flex;flex-direction:column;gap:20px;align-self:start}
+.ct-h{position:relative;height:132.77px;width:100%}
+.ct-h .k{position:absolute;left:0;right:0;top:-1px;font-weight:700;font-size:12px;line-height:14.4px;letter-spacing:1.2px;color:#00c853;white-space:nowrap}
+.ct-h h2{position:absolute;left:0;right:0;top:20.39px;font-weight:700;font-size:48px;line-height:55.2px;letter-spacing:-1.2px;color:#f0f0f0;white-space:nowrap}
+.ct-h p{position:absolute;left:0;right:0;top:80.87px;font-size:16px;line-height:25.6px;color:#b0b0b0;white-space:nowrap}
+.ct-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:143.78px 120.5px;gap:12px;width:100%}
+.cc{position:relative;height:143.78px;border-radius:16px;background:#1a1a1a;filter:drop-shadow(0 1px 1px rgba(0,0,0,.05))}
+.cc>*{position:absolute;left:20px;right:20px}
+.cc .ic{top:20px}
+.cc .lb{top:51px;font-weight:700;font-size:12px;line-height:14.4px;letter-spacing:1.68px;color:#909090}
+.cc .ln{text-decoration:none;color:#f0f0f0;font-weight:700}
+.cc .sub{font-weight:500;font-size:12px;line-height:14.4px;letter-spacing:.24px;color:#b0b0b0;white-space:nowrap}
+.wa{grid-column:1/span 2;height:120.5px;display:flex;align-items:center;justify-content:space-between;padding:20px;border-radius:16px;background:rgba(212,175,55,.12);filter:drop-shadow(0 1px 1px rgba(0,0,0,.05))}
+.wa .g{display:flex;gap:12px;align-items:center}
+.wa .ci{width:48px;height:48px;border-radius:9999px;background:#00c853;display:flex;align-items:center;justify-content:center}
+.wa .ci img{width:20px;height:20px}
+.wa .tx{position:relative;width:250.42px;height:80.5px}
+.wa h4{position:absolute;left:0;right:0;top:-1px;font-weight:700;font-size:14px;line-height:17.5px;letter-spacing:.14px;color:#f0f0f0;white-space:nowrap}
+.wa p{position:absolute;left:0;right:0;top:17.5px;font-size:14px;line-height:21px;letter-spacing:.07px;color:#b0b0b0;white-space:nowrap}
+.wa a{display:flex;gap:4px;align-items:center;padding:8px 20px;border-radius:9999px;background:#d4af37;color:#0a0a0a;font-weight:500;font-size:12px;line-height:14.4px;letter-spacing:.24px;text-decoration:none;white-space:nowrap}
+.wa a img{width:12px;height:12px}
+.hrs{display:flex;flex-direction:column;gap:6px;padding:19px 20px 20px;border-radius:16px;background:#1a1a1a;filter:drop-shadow(0 1px 1px rgba(0,0,0,.05));width:100%}
+.hrs .t{font-weight:700;font-size:12px;line-height:14.4px;letter-spacing:1.68px;color:#00c853}
+.hrs .r{display:flex;align-items:flex-start;justify-content:space-between;padding:4px 0;font-size:14px;line-height:21px;letter-spacing:.07px;white-space:nowrap}
+.hrs .r b{font-weight:600;color:#f0f0f0}
+.hrs .r span{color:#b0b0b0}
+.hrs .r span.ac{font-weight:600;color:#00c853}
+.ct-r{grid-column:7/span 6;display:flex;flex-direction:column;gap:12px;padding-bottom:118.44px;align-self:start}
+.map{position:relative;height:420px;width:100%;border-radius:24px;background:#1a1a1a;overflow:clip;box-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.1)}
+.map .mi{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.map .mi img{position:absolute;height:130.48%;left:0;top:-15.24%;width:100%;max-width:none}
+.pin{position:absolute;left:24px;top:24px;max-width:384px;display:flex;gap:12px;align-items:center;padding:20px;border-radius:16px;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);box-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.1)}
+.pin .pc{width:40px;height:40px;border-radius:9999px;background:#00c853;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pin .pc img{width:13.333px;height:16.667px}
+.pin .tx{position:relative;width:286.75px;height:38.5px}
+.pin h4{position:absolute;left:0;right:0;top:-1px;font-weight:700;font-size:14px;line-height:17.5px;letter-spacing:.14px;color:#f0f0f0;white-space:nowrap}
+.pin p{position:absolute;left:0;right:0;top:17.5px;font-size:14px;line-height:21px;letter-spacing:.07px;color:#b0b0b0;white-space:nowrap}
+.gm{position:absolute;right:24px;bottom:24px;display:flex;gap:4px;align-items:center;padding:8px 20px;border-radius:9999px;background:#0a0a0a;color:#f0f0f0;font-weight:500;font-size:12px;line-height:14.4px;letter-spacing:.24px;text-decoration:none;white-space:nowrap;box-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1)}
+.gm img{width:10.667px;height:12.667px}
+.info{display:flex;align-items:center;justify-content:space-between;padding:20px;border-radius:16px;background:#111111;width:100%}
+.info div{position:relative;height:18px;padding-left:22px;display:flex;align-items:center;font-weight:500;font-size:12px;line-height:14.4px;letter-spacing:.24px;color:#b0b0b0;white-space:nowrap}
+.info div img{position:absolute;left:0;top:50%;transform:translateY(-50%)}
+
+/* --- Floating Top Navigation Header --- */
+.hdr{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(26,26,26,.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(212,175,55,.15);box-shadow:0 4px 20px -2px rgba(0,0,0,.04)}
+.hdr-in{width:1280px;max-width:100%;margin:0 auto;height:76px;padding:0 40px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.hdr-brand{display:flex;align-items:center;gap:14px;text-decoration:none}
+.hdr-emblem{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#00c853,#00e676);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:16px;box-shadow:0 4px 10px rgba(0,200,83,.25)}
+.hdr-title{display:flex;flex-direction:column}
+.hdr-title b{font-weight:700;font-size:17px;line-height:20px;letter-spacing:-.3px;color:#f0f0f0}
+.hdr-title span{font-weight:700;font-size:10px;line-height:12px;letter-spacing:1.4px;color:#00c853}
+
+.hdr-nav{display:flex;align-items:center;gap:6px}
+.hdr-nav a{padding:8px 14px;border-radius:9999px;font-weight:600;font-size:13px;line-height:16px;color:#b0b0b0;text-decoration:none;transition:all .2s ease}
+.hdr-nav a:hover{color:#00c853;background:#111111}
+.hdr-nav a.ac{background:rgba(212,175,55,.12);color:#00c853}
+
+.hdr-actions{display:flex;align-items:center;gap:16px}
+.hdr-tel{display:flex;align-items:center;gap:6px;font-weight:600;font-size:13px;color:#00c853;text-decoration:none;transition:color .2s}
+.hdr-tel:hover{color:#004a73}
+.hdr-tel img{width:16px;height:16px}
+.hdr-wa{width:38px;height:38px;border-radius:9999px;background:#222222;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.hdr-wa:hover{background:#2a2a2a;transform:scale(1.05)}
+.hdr-wa img{width:18px;height:18px}
+.hdr-btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 22px;border-radius:9999px;background:#d4af37;color:#0a0a0a;font-weight:700;font-size:13px;text-decoration:none;box-shadow:0 4px 14px rgba(0,200,83,.3);transition:all .2s}
+.hdr-btn:hover{background:#e6c35c;transform:translateY(-1px)}
+
+/* --- Comprehensive Luxury Footer --- */
+.ftr{width:100%;background:#050505;color:#e0e0e0;padding:72px 0 36px;margin-top:0}
+.ftr-in{width:1280px;max-width:100%;margin:0 auto;padding:0 80px;display:flex;flex-direction:column;gap:56px}
+.ftr-top{display:grid;grid-template-columns:4fr 3fr 2.5fr 3.5fr;gap:40px}
+
+.ftr-col{display:flex;flex-direction:column;gap:14px}
+.ftr-brand{display:flex;align-items:center;gap:12px}
+.ftr-emblem{width:32px;height:32px;border-radius:8px;background:#00c853;display:flex;align-items:center;justify-content:center}
+.ftr-brand span{font-weight:700;font-size:18px;letter-spacing:-.3px;color:#fff}
+.ftr-col p{font-size:14px;line-height:22px;color:#a0abb5;margin:0}
+.ftr-badges{display:flex;flex-wrap:wrap;gap:8px;padding-top:6px}
+.ftr-badges span{font-size:11px;font-weight:600;padding:4px 10px;border-radius:9999px;background:rgba(255,255,255,.08);color:#d6e3fe}
+
+.ftr-col h5{font-weight:700;font-size:12px;letter-spacing:1.5px;color:#00e676;margin:0 0 4px 0}
+.ftr-links{display:flex;flex-direction:column;gap:10px}
+.ftr-links a{color:#a0abb5;font-size:14px;text-decoration:none;transition:color .2s}
+.ftr-links a:hover{color:#fff}
+
+.ftr-nl{display:flex;gap:8px;margin-top:8px}
+.ftr-nl input{flex:1;height:42px;padding:0 14px;border-radius:10px;background:rgba(255,255,255,.08);border:1px solid rgba(212,175,55,.2);color:#fff;font-size:13px;outline:none}
+.ftr-nl input::placeholder{color:#666666}
+.ftr-nl button{padding:0 18px;border-radius:10px;background:#d4af37;color:#0a0a0a;font-weight:700;font-size:13px;border:0;cursor:pointer;transition:background .2s}
+.ftr-nl button:hover{background:#00e676}
+
+.ftr-bot{display:flex;align-items:center;justify-content:space-between;padding-top:28px;border-top:1px solid rgba(255,255,255,.1);font-size:13px;color:#666666}
+.ftr-bot a{color:#666666;text-decoration:none;margin-left:20px;transition:color .2s}
+.ftr-bot a:hover{color:#fff}
+
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-in">
+    <a class="hdr-brand" href="#hero">
+      <div class="hdr-emblem"><img src="assets/icon-certified.svg" style="width:20px;height:20px;filter:brightness(0) invert(1)" alt="AURA"></div>
+      <div class="hdr-title">
+        <b>AURA DENTAL</b>
+        <span>ADVANCED IMPLANT &amp; COSMETIC SUITE</span>
+      </div>
+    </a>
+    <nav class="hdr-nav">
+      <a class="ac" href="#hero">3D Anatomy</a>
+      <a href="#narrative">Why AURA</a>
+      <a href="#treatments">Treatments</a>
+      <a href="#lab">Procedural Lab</a>
+      <a href="#results">Before &amp; After</a>
+      <a href="#technology">Technology</a>
+      <a href="#contact">Location</a>
+    </nav>
+    <div class="hdr-actions">
+      <a class="hdr-tel" href="tel:+18004922872"><img alt="" src="assets/ct-phone.svg"><span>+1 (800) 492-AURA</span></a>
+      <a class="hdr-wa" href="https://wa.me/18004922872?text=Hello%20AURA%20Dental,%20I%20would%20like%20to%20request%20a%20clinical%20consultation." target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><img alt="" src="assets/ct-wa.svg"></a>
+      <a class="hdr-btn" href="#booking">Book Appointment</a>
+    </div>
+  </div>
+</header>
+
+<div class="hero-track" id="heroTrack">
+<section class="hero" id="hero">
+  <div class="blob blob-a"></div>
+  <div class="blob blob-b"></div>
+  <div class="canvas"><canvas id="heroCanvas" width="1920" height="1080"></canvas></div>
+
+  <div class="topbar rel">
+    <div class="status">
+      <span class="dot"></span>
+      <span class="t12 live">LIVE SURGICAL SUITE ACTIVE</span>
+      <span class="t12 loc">| PARK AVE SUITE 400</span>
+    </div>
+    <div class="modes" role="tablist" aria-label="Anatomical camera">
+      <button class="mode on" data-target="0" role="tab" aria-selected="true">Full Enamel</button>
+      <button class="mode" data-target="0.45" role="tab" aria-selected="false">Cross-Section Pulp</button>
+      <button class="mode" data-target="1.0" role="tab" aria-selected="false">Implant Integration</button>
+    </div>
+  </div>
+
+  <div class="main rel">
+    <div class="grid">
+      <div class="left">
+        <div class="badge"><img alt="" src="assets/icon-certified.svg"><span>ITI &amp; AACD CERTIFIED MASTERY</span></div>
+        <h1><span>Your Smile</span><span>Deserves</span><span class="grad">the Best Care</span></h1>
+        <p class="lead">Advanced dental treatments. Personalised care. Confident smiles.<br>Experience micro-robotic guided implantology and biometric<br>ceramic design in an architectural sanctuary.</p>
+        <div class="ctas">
+          <a class="btn primary" href="#booking">Book an Appointment <img alt="" src="assets/icon-arrow.svg"></a>
+          <a class="btn secondary" href="#treatments">Explore Treatments <img alt="" src="assets/icon-chevron.svg"></a>
+        </div>
+      </div>
+      <div class="right">
+        <div class="pill">
+          <div class="ico" style="background:rgba(0,200,83,.12)"><img alt="" src="assets/icon-implant.svg" style="width:20.167px;height:19.25px"></div>
+          <div><div class="n">99.4%</div><div class="c">Implant Success Longevity</div></div>
+        </div>
+        <div class="pill-m">
+          <div class="pill">
+            <div class="ico" style="background:rgba(212,175,55,.12)"><img alt="" src="assets/icon-ceramic.svg" style="width:18.333px;height:16.5px"></div>
+            <div><div class="h">Biocompatible Ceramic</div><div class="s">Medical-Grade Pure Zirconia</div></div>
+          </div>
+        </div>
+        <div class="pill">
+          <div class="ico" style="background:rgba(212,175,55,.15)"><img alt="" src="assets/icon-precision.svg" style="width:12.833px;height:17.417px"></div>
+          <div><div class="h">Microscopic Precision</div><div class="s">Endodontic Sub-Micron Accuracy</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom rel">
+    <div class="hint"><img alt="" src="assets/icon-scroll.svg"><span class="t12">Drag &amp; rotate 3D dental specimen to inspect volumetric tooth morphology</span></div>
+    <a class="scroll" href="#stats"><span class="t12">SCROLL TO DISCOVER</span><span class="track"><i></i></span></a>
+  </div>
+</section>
+</div>
+
+<section class="stats" id="stats">
+  <div class="stats-in">
+    <div class="sc" style="padding-bottom:142.38px">
+      <div class="sc-top"><div class="sc-ico" style="background:rgba(212,175,55,.12)"><img alt="" src="assets/stat-1.svg" style="width:21.667px;height:21.667px"></div><span class="sc-tag">GLOBAL COHORT</span></div>
+      <div class="sc-big">18,500+</div>
+      <div class="sc-title">Successful<br>Transformations</div>
+      <div class="sc-text">Bespoke veneer laminates,<br>smile restorations, and<br>precision full-arch fixed<br>rehabilitations.</div>
+    </div>
+    <div class="sc" style="padding-bottom:108.19px">
+      <div class="sc-top"><div class="sc-ico" style="background:rgba(212,175,55,.15)"><img alt="" src="assets/stat-2.svg" style="width:21.667px;height:21.667px"></div><span class="sc-tag">FELLOWSHIP</span></div>
+      <div class="sc-big">15+<br>Years</div>
+      <div class="sc-title">Surgical Mastery &amp;<br>Aligners</div>
+      <div class="sc-text">Dedicated clinical research,<br>pioneering minimally invasive<br>digital dentistry protocols.</div>
+    </div>
+    <div class="sc" style="padding-bottom:32px">
+      <div class="sc-top"><div class="sc-ico" style="background:rgba(0,200,83,.12)"><img alt="" src="assets/stat-3.svg" style="width:21.667px;height:21.667px"></div><span class="sc-tag">AI ROBOTICS</span></div>
+      <div class="sc-big">3D<br>CBCT &amp;<br>AI</div>
+      <div class="sc-title">Sub-Millimeter<br>Guided Implants</div>
+      <div class="sc-text">Zero blind drilling. Optical<br>nerve navigation for 100%<br>pre-planned surgical implant<br>stability.</div>
+    </div>
+    <div class="sc" style="padding-bottom:142.38px">
+      <div class="sc-top"><div class="sc-ico" style="background:rgba(212,175,55,.12)"><img alt="" src="assets/stat-4.svg" style="width:21.667px;height:20.583px"></div><span class="sc-tag">VERIFIED</span></div>
+      <div class="sc-rate"><div class="v">5.0</div><div class="stars"><img alt="" src="assets/icon-star.svg"><img alt="" src="assets/icon-star.svg"><img alt="" src="assets/icon-star.svg"><img alt="" src="assets/icon-star.svg"><img alt="" src="assets/icon-star.svg"></div></div>
+      <div class="sc-title">3,200+ Patient<br>Reviews</div>
+      <div class="sc-text">Ranked Manhattan&#39;s #1<br>Luxury Dental Institute for<br>anxious patients and complex<br>smile rehabilitations.</div>
+    </div>
+  </div>
+</section>
+
+<section class="nar" id="narrative">
+ <div class="nar-grid">
+  <!-- Left: Doctor Julian Vance Portrait -->
+  <div class="nar-l">
+   <div class="under"></div>
+   <div class="port">
+    <div class="ph"><div><img alt="Dr. Julian Vance DDS" src="assets/doctor-portrait.png"></div></div>
+    <div class="fcard">
+     <div class="in">
+      <div class="nm">Dr. Julian Vance, DDS</div>
+      <div class="cr">FICOI • HARVARD DENTAL FELLOW</div>
+      <div class="rl">Chief Surgeon &amp; Prosthodontist Director</div>
+     </div>
+     <div class="bd"><img alt="" src="assets/nar-badge.svg"></div>
+    </div>
+   </div>
+  </div>
+
+  <!-- Right: Narrative & Suite Amenities Bento -->
+  <div class="nar-r">
+   <div class="nar-tag"><img alt="" src="assets/nar-tag.svg">ABOUT AURA DENTAL INSTITUTE</div>
+   <h2 class="nar-h2">Where Surgical Rigor Meets<span>Bespoke Hospitality</span></h2>
+   <p class="nar-p">Founded on the principle that dental healthcare should be profoundly calming, technically unassailable, and cosmetically transformative. At AURA, every consultation begins with computerized virtual anatomy simulation—allowing patients to review their exact outcome before procedural commencement.</p>
+   
+   <div class="bento">
+    <div class="bc">
+     <div class="bi" style="background:rgba(212,175,55,.15)"><img alt="" src="assets/nar-b1.svg" style="width:20px;height:18px"></div>
+     <div class="bt">
+      <h4>Hospital-Grade HEPA filtration</h4>
+      <p>Surgical cleanroom positive air pressure cycle every 3 minutes.</p>
+     </div>
+    </div>
+    <div class="bc">
+     <div class="bi" style="background:rgba(212,175,55,.12)"><img alt="" src="assets/nar-b2.svg" style="width:19px;height:20px"></div>
+     <div class="bt">
+      <h4>Zero-Pain Computer Wand</h4>
+      <p>Micro-dosed electronic anesthesia ensuring complete pain-free comfort.</p>
+     </div>
+    </div>
+    <div class="bc">
+     <div class="bi" style="background:rgba(0,200,83,.12)"><img alt="" src="assets/nar-b3.svg" style="width:18px;height:18px"></div>
+     <div class="bt">
+      <h4>Digital 3D Smile Preview</h4>
+      <p>Photorealistic volumetric facially-guided aesthetic trial before prep.</p>
+     </div>
+    </div>
+    <div class="bc">
+     <div class="bi" style="background:rgba(212,175,55,.15)"><img alt="" src="assets/nar-b4.svg" style="width:20px;height:20px"></div>
+     <div class="bt">
+      <h4>Private Sedation Suites</h4>
+      <p>Certified board anesthesiologists for serene dream-state procedures.</p>
+     </div>
+    </div>
+   </div>
+
+   <div class="creds">
+    <div class="cred"><img alt="" src="assets/nar-check.svg">AACD Global Member</div>
+    <div class="cred"><img alt="" src="assets/nar-check.svg">Straumann Pro Arch Center</div>
+    <div class="cred"><img alt="" src="assets/nar-check.svg">Nobel Biocare Diamond Fellow</div>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section class="svc" id="treatments">
+ <div class="svc-head">
+  <div class="svc-l"><div class="k">CLINICAL EXCELLENCE</div><h2>Our Comprehensive<br>Treatment Suite</h2><p>Engineered for longevity, biological harmony, and cinematic beauty with<br>cutting-edge painless protocols.</p></div>
+  <div class="svc-note">All treatments include 3D diagnostic scan &amp; personalized warranty</div>
+ </div>
+ <div class="svc-grid">
+  <article class="scard">
+   <div class="im"><div><img alt="" src="assets/svc-1.png"></div><span class="tg">SWISS ZIRCONIA &amp; TITANIUM</span><span class="pn"><i style="background:#22c55e"></i>Pain Level: Zero</span></div>
+   <div class="bd"><div class="tp"><div class="rw"><h3>Dental Implants</h3><span class="du">1 - 2 Visits</span></div><p class="ds">Permanent single tooth and full-arch immediate<br>restoration using robotic navigation and Swiss<br>cold-worked titanium.</p></div>
+    <div class="ft"><b>Lifetime Warranty</b><a href="#booking">Learn More <img alt="" src="assets/icon-learn-more.svg"></a></div></div>
+  </article>
+  <article class="scard">
+   <div class="im"><div><img alt="" src="assets/svc-2.png"></div><span class="tg">ACCELERATED ORTHODONTICS</span><span class="pn"><i style="background:#22c55e"></i>Pain Level: Minimal</span></div>
+   <div class="bd"><div class="tp"><div class="rw"><h3>Teeth Alignment</h3><span class="du">4 - 9 Months</span></div><p class="ds">Precision guided biological tooth repositioning<br>targeting crossbites, spacing, and severe<br>crowding with gentle vectors.</p></div>
+    <div class="ft"><b>AI Planned Track</b><a href="#booking">Learn More <img alt="" src="assets/icon-learn-more.svg"></a></div></div>
+  </article>
+  <article class="scard">
+   <div class="im"><div><img alt="" src="assets/svc-3.png"></div><span class="tg">VIRTUALLY INVISIBLE</span><span class="pn"><i style="background:#22c55e"></i>Pain Level: Mild</span></div>
+   <div class="bd"><div class="tp"><div class="rw"><h3>Clear Aligners</h3><span class="du">3D Custom Trays</span></div><p class="ds">Custom multi-layer polymer trays engineered<br>with SmartForce attachments for discreet,<br>rapid smile alignment.</p></div>
+    <div class="ft"><b>Removable &amp; Discreet</b><a href="#booking">Learn More <img alt="" src="assets/icon-learn-more.svg"></a></div></div>
+  </article>
+  <article class="scard">
+   <div class="im"><div><img alt="" src="assets/svc-4.png"></div><span class="tg">SELF-LIGATING CERAMIC</span><span class="pn"><i style="background:#eab308"></i>Low Friction</span></div>
+   <div class="bd"><div class="tp"><div class="rw"><h3>Modern Braces</h3><span class="du">Low-Profile</span></div><p class="ds">Translucent polycrystalline sapphire brackets<br>that resist staining and blend imperceptibly<br>with your natural enamel.</p></div>
+    <div class="ft"><b>Non-Staining Brackets</b><a href="#booking">Learn More <img alt="" src="assets/icon-learn-more.svg"></a></div></div>
+  </article>
+  <article class="scard">
+   <div class="im"><div><img alt="" src="assets/svc-5.png"></div><span class="tg">MICROSCOPIC ROTARY</span><span class="pn"><i style="background:#22c55e"></i>Painless 1-Visit</span></div>
+   <div class="bd"><div class="tp"><div class="rw"><h3>Root Canal Therapy</h3><span class="du">Single 60 Min Visit</span></div><p class="ds">Ultrasonic debridement and 25x Carl Zeiss<br>magnification eliminate infection with<br>immediate relief and tooth preservation.</p></div>
+    <div class="ft"><b>Bioceramic Apex Seal</b><a href="#booking">Learn More <img alt="" src="assets/icon-learn-more.svg"></a></div></div>
+  </article>
+  <article class="scard">
+   <div class="im"><div><img alt="" src="assets/svc-6.png"></div><span class="tg">COLD BLUE LASER</span><span class="pn"><i style="background:#22c55e"></i>Zero Sensitivity</span></div>
+   <div class="bd"><div class="tp"><div class="rw"><h3>Teeth Whitening</h3><span class="du">Up to 8 Shades</span></div><p class="ds">Medical-grade hydrogen peroxide accelerated<br>by wavelength-filtered cold laser, eliminating<br>internal stains safely.</p></div>
+    <div class="ft"><b>45-Minute In-Office</b><a href="#booking">Learn More <img alt="" src="assets/icon-learn-more.svg"></a></div></div>
+  </article>
+  <article class="scard">
+   <div class="im"><div><img alt="" src="assets/svc-7.png"></div><span class="tg">SAME-DAY CAD/CAM CEREC</span><span class="pn"><i style="background:#22c55e"></i>Pain Level: Zero</span></div>
+   <div class="bd"><div class="tp"><div class="rw"><h3>Dental Crowns</h3><span class="du">Same-Day Milled</span></div><p class="ds">German lithium disilicate &amp; zirconia crowns<br>custom milled and glazed while you relax in our<br>private sky lounge.</p></div>
+    <div class="ft"><b>No Temporary Crown</b><a href="#booking">Learn More <img alt="" src="assets/icon-learn-more.svg"></a></div></div>
+  </article>
+  <article class="scard">
+   <div class="im"><div><img alt="" src="assets/svc-8.png"></div><span class="tg">DIGITAL FACIAL HARMONY</span><span class="pn"><i style="background:#22c55e"></i>Bespoke Handcraft</span></div>
+   <div class="bd"><div class="tp"><div class="rw"><h3>Smile Designing</h3><span class="du">Veneers Masterclass</span></div><p class="ds">Golden ratio architectural mapping matching<br>your lip curve, facial contours, and personality<br>with custom porcelain veneers.</p></div>
+    <div class="ft"><b>3D Physical Try-In</b><a href="#booking">Learn More <img alt="" src="assets/icon-learn-more.svg"></a></div></div>
+  </article>
+  <article class="scard">
+   <div class="im"><div><img alt="" src="assets/svc-9.png"></div><span class="tg">GUM &amp; ENAMEL ARCHITECTURE</span><span class="pn"><i style="background:#22c55e"></i>Minimally Invasive</span></div>
+   <div class="bd"><div class="tp"><div class="rw"><h3>Cosmetic Dentistry</h3><span class="du">Laser Contouring</span></div><p class="ds">Harmonious gum lift re-sculpting, micro-<br>bonding enamel repair, and diastema closures<br>done in a single peaceful afternoon.</p></div>
+    <div class="ft"><b>Immediate Results</b><a href="#booking">Learn More <img alt="" src="assets/icon-learn-more.svg"></a></div></div>
+  </article>
+ </div>
+</section>
+
+<section class="lab" id="lab">
+ <div class="lab-h">
+  <div class="lab-tag"><img alt="" src="assets/lab-tag.svg">AURA CLINICAL SIMULATOR</div>
+  <h2>Interactive Procedural Lab</h2>
+  <p>Observe step-by-step biomechanical transformations. Select a procedure below to initiate the stage-by-stage clinical simulator.</p>
+ </div>
+ <div class="lab-tabs">
+  <button class="ltab on" onclick="switchSim('implant')">1. Dental Implant Placement</button>
+  <button class="ltab" onclick="switchSim('align')">2. Teeth Alignment Progression</button>
+  <button class="ltab" onclick="switchSim('tray')">3. Clear Aligner Micro-Vectors</button>
+  <button class="ltab" onclick="switchSim('cure')">4. Tooth Ceramic Restoration</button>
+  <button class="ltab" onclick="switchSim('root')">5. Rotary Root Canal</button>
+ </div>
+ <div class="stage">
+  <!-- Simulation 1: Dental Implant Placement -->
+  <div class="sim-panel on" id="simView-implant">
+   <div class="st-l">
+    <div class="st-s"><span class="beacon"></span><span id="implantStageTitle">STAGE 1 / 4: TOOTH BED EXTRACTION &amp; SANITIZATION</span></div>
+    <img id="implantStageImg" class="sim-stage-img" src="assets/lab-implant-stage1.svg" alt="Implant Procedure Stage">
+   </div>
+   <div class="st-r">
+    <div class="k">SURGICAL SEQUENCE NAVIGATION</div>
+    <h3 id="implantHeadline">1. Minimally Invasive Site Prep</h3>
+    <p id="implantDesc">The compromised tooth root is delicately removed with zero bone trauma. Ultrasonic piezosurgery dispatches cavitation waves to sterilize the biological pocket.</p>
+    <div class="st-b">
+     <div class="st-btns">
+      <button class="sbtn on" id="impBtn-1" onclick="setImplantStage(1)">1. Extract</button>
+      <button class="sbtn" id="impBtn-2" onclick="setImplantStage(2)">2. Fixture</button>
+      <button class="sbtn" id="impBtn-3" onclick="setImplantStage(3)">3. Osseo</button>
+      <button class="sbtn" id="impBtn-4" onclick="setImplantStage(4)">4. Crown</button>
+     </div>
+     <div class="st-m">
+      <span><img alt="" src="assets/lab-cbct.svg" style="width:12px;height:12px">3D CBCT Navigated</span>
+      <span><img alt="" src="assets/lab-torque.svg" style="width:13px;height:13px">35 N/cm Torque</span>
+     </div>
+    </div>
+   </div>
+  </div>
+
+  <!-- Simulation 2: Teeth Alignment Progression -->
+  <div class="sim-panel" id="simView-align">
+   <div class="st-l">
+    <div class="st-s"><span class="beacon"></span><span>CONTINUOUS BIOMECHANICAL LEVELING</span></div>
+    <div class="align-teeth-wrap">
+     <div class="align-tooth" id="alignTooth1" style="width:48px;height:95px;transform:rotate(-18deg) translateY(12px)">
+      <div class="t-bracket"></div><span class="t-lbl">#7</span>
+     </div>
+     <div class="align-tooth" id="alignTooth2" style="width:58px;height:115px;transform:rotate(12deg) translateY(-8px)">
+      <div class="t-bracket"></div><span class="t-lbl">#8</span>
+     </div>
+     <div class="align-tooth" id="alignTooth3" style="width:58px;height:115px;transform:rotate(-8deg) translateY(4px)">
+      <div class="t-bracket"></div><span class="t-lbl">#9</span>
+     </div>
+     <div class="align-tooth" id="alignTooth4" style="width:48px;height:95px;transform:rotate(16deg) translateY(16px)">
+      <div class="t-bracket"></div><span class="t-lbl">#10</span>
+     </div>
+    </div>
+    <div style="width:100%;max-width:320px;display:flex;flex-direction:column;gap:6px;margin-top:12px">
+     <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:700;color:#64748b">
+      <span>Week 0</span>
+      <span id="alignWeekLabel" style="color:#00c853">Week 0 (Crowded)</span>
+      <span>Week 20</span>
+     </div>
+     <input id="alignSlider" type="range" min="0" max="100" value="0" style="width:100%;accent-color:#00c853;cursor:pointer" oninput="updateAlignment(this.value)">
+    </div>
+   </div>
+   <div class="st-r">
+    <div class="k">BIOMECHANICAL ARCH EXPANSION</div>
+    <h3>Continuous Gentle Vectors</h3>
+    <p>Drag the week timeline slider to witness digital de-crowding progression. Controlled 0.25mm force intervals preserve root pulp vitality while establishing flawless arch symmetry.</p>
+    <div class="st-b">
+     <div style="padding:12px;background:#151515;border-radius:12px;border:1px solid #2a2a2a;display:flex;flex-direction:column;gap:4px">
+      <span style="font-size:12px;font-weight:700;color:#f0f0f0">Estimated Treatment: 14 to 20 Weeks</span>
+      <span style="font-size:11px;color:#64748b">Low-friction bracket system • 100% biocompatible arch tracking</span>
+     </div>
+    </div>
+   </div>
+  </div>
+
+  <!-- Simulation 3: Clear Aligner Micro-Vectors -->
+  <div class="sim-panel" id="simView-tray">
+   <div class="st-l">
+    <div class="st-s"><span class="beacon"></span><span>SMARTTRACK THERMOPLASTIC INTERACTION</span></div>
+    <img id="trayImg" class="sim-stage-img" src="assets/lab-aligner-tray.svg" alt="Clear Aligner Micro Vectors">
+    <button class="lab-action-btn" id="trayToggleBtn" onclick="toggleTraySnap()">Simulate Tray Insertion &amp; Force Vectors</button>
+   </div>
+   <div class="st-r">
+    <div class="k">ATTACHMENT VECTOR TECHNOLOGY</div>
+    <h3>SmartForce Micro-Points</h3>
+    <p>Custom composite geometric anchors placed on tooth surfaces guide exact 3-dimensional rotational forces that standard clear trays cannot execute alone.</p>
+    <div class="st-b">
+     <div class="st-m">
+      <span><img alt="" src="assets/lab-cbct.svg" style="width:12px;height:12px">22 Hours/Day Wear Protocol</span>
+      <span><img alt="" src="assets/lab-torque.svg" style="width:13px;height:13px">7-Day Tray Change</span>
+     </div>
+    </div>
+   </div>
+  </div>
+
+  <!-- Simulation 4: Tooth Ceramic Restoration -->
+  <div class="sim-panel" id="simView-cure">
+   <div class="st-l">
+    <div class="st-s"><span class="beacon"></span><span>470NM PHOTOPOLYMERIZATION</span></div>
+    <img class="sim-stage-img" src="assets/lab-curing-wand.svg" alt="Ceramic Curing Wand">
+    <button class="lab-action-btn" id="cureActionBtn" onclick="activateCuringLight()"><img src="assets/stat-1.svg" style="width:14px;height:14px;filter:brightness(0) invert(1)"> Activate 1200mW LED Curing Wand</button>
+   </div>
+   <div class="st-r">
+    <div class="k">PHOTO-POLYMERIZATION</div>
+    <h3>Nano-Ceramic Hybrid Bond</h3>
+    <p>Press the curing wand button above to trigger high-intensity blue light photo-initiators, cross-linking monomer chains into an adamantine structure matching natural tooth enamel hardness.</p>
+    <div class="st-b">
+     <div style="padding:10px 14px;background:#151515;border-radius:12px;border:1px solid #2a2a2a">
+      <span id="curingStatus" style="font-size:12px;font-weight:700;color:#00c853">Awaiting Photopolymerization Trigger</span>
+     </div>
+    </div>
+   </div>
+  </div>
+
+  <!-- Simulation 5: Rotary Root Canal -->
+  <div class="sim-panel" id="simView-root">
+   <div class="st-l">
+    <div class="st-s"><span class="beacon"></span><span>ZEISS 25X MICROSCOPIC DEBRIDEMENT</span></div>
+    <img class="sim-stage-img" src="assets/lab-rotary-file.svg" alt="Rotary Root Canal Instrument">
+    <div style="display:flex;gap:10px;margin-top:10px">
+     <button class="lab-action-btn" onclick="stepRootCanal('clean')" style="background:#00c853">1. Cleanse Canal</button>
+     <button class="lab-action-btn" onclick="stepRootCanal('seal')" style="background:#00e676">2. Bioceramic Seal</button>
+    </div>
+   </div>
+   <div class="st-r">
+    <div class="k">ENDODONTIC ROTARY PRECISION</div>
+    <h3 id="rcTitle">Rotary Canal Shaping</h3>
+    <p id="rcDesc">Flexible nickel-titanium motorized instruments gently clear necrotic pulp along curved micro-canals with automated electronic apex sensor feedback.</p>
+    <div class="st-b">
+     <div class="st-m">
+      <span><img alt="" src="assets/lab-cbct.svg" style="width:12px;height:12px">100% Painless Debridement</span>
+      <span><img alt="" src="assets/lab-torque.svg" style="width:13px;height:13px">Bioceramic Apex Hermetic Lock</span>
+     </div>
+    </div>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section class="ba" id="results">
+ <div class="ba-head">
+  <div class="ba-l"><div class="k">CLINICAL EVIDENCE</div><h2>Real Patient<br>Transformations</h2><p>Drag the optical split slider to examine genuine clinical transformations under<br>standardized cross-polarized photographic lighting.</p></div>
+        <div class="ba-tabs">
+    <button class="btab on" data-case="implants">Dental Implants</button>
+    <button class="btab" data-case="braces">Dental Braces (Alignment)</button>
+    <button class="btab" data-case="whitening">Teeth Whitening</button>
+    <button class="btab" data-case="rootcanal">Root Canal Therapy</button>
+   </div>
+ </div>
+ <div class="cmp" id="cmp">
+  <div class="after"><img id="cmpImgAfter" alt="After transformation" src="assets/case_implants_after.png"></div>
+  <div class="before" id="cmpBefore"><div class="w"><img id="cmpImgBefore" alt="Before treatment" src="assets/case_implants_before.png"></div><span class="lbl lb">BEFORE TREATMENT</span></div>
+  <span class="lbl la">AFTER TRANSFORMATION</span>
+  <div class="div" id="cmpDiv"><div class="hd"><img alt="" src="assets/ba-handle.svg"></div></div>
+ </div>
+ <div class="ba-strip" id="cmpStrip">
+  <div class="g"><div class="ic"><img alt="" src="assets/ba-strip-icon.svg"></div><div><h4 id="cmpTitle">Micro-Robotic Guided Implant Restoration</h4><p id="cmpDesc">Completed in 2 visits • Single missing incisor restored • Cold-worked Swiss titanium &amp; biocompatible zirconia</p></div></div>
+  <a href="#booking">Request Case Consultation <img alt="" src="assets/ba-arrow.svg"></a>
+ </div>
+</section>
+
+<section class="tech" id="technology">
+ <div class="tech-g">
+  <div class="tech-l">
+   <div class="k">THE AURA DISTINCTION</div>
+   <h2>Dental Care<br>Elevated to<span style="color:#d4af37">An Art Form</span></h2>
+   <p>We eliminated fear, discomfort, and uncertainty from<br>modern dentistry. From private sound-isolated<br>treatment salons to guaranteed Swiss implant<br>hardware, your wellness is safeguarded at every<br>touchpoint.</p>
+   <div class="box"><h4>100% Digital Workflow</h4><div>No uncomfortable impression goop or gagging putty. High-<br>speed 3D optical intraoral cameras capture 6,000 sub-<br>millimeter frames per second.</div></div>
+  </div>
+  <div class="tech-r"><div class="feat"><div class="fi" style="background:rgba(212,175,55,.12)"><img alt="" src="assets/tech-1.svg" style="width:17.333px;height:21.667px"></div><h3>Painless Wand<br>Anesthesia</h3><p>Electronic microprocessor delivers<br>flow below the patient pain<br>threshold. Zero numb face sensation<br>afterwards.</p></div><div class="feat" style="padding-bottom:61.69px"><div class="fi" style="background:rgba(0,200,83,.12)"><img alt="" src="assets/tech-2.svg" style="width:21.667px;height:23.833px"></div><h3>AI Guided 3D Scans</h3><p>Full cranial CBCT cross-sections<br>with instant artificial intelligence<br>nerve mapping and automatic smile<br>simulation.</p></div><div class="feat"><div class="fi" style="background:rgba(212,175,55,.15)"><img alt="" src="assets/tech-3.svg" style="width:17.333px;height:22.75px"></div><h3>Lifetime Swiss<br>Warranty</h3><p>Every Straumann and Nobel Biocare<br>titanium post is certified with a<br>global transferable lifetime warranty<br>card.</p></div><div class="feat" style="padding-bottom:61.7px"><div class="fi" style="background:rgba(212,175,55,.12)"><img alt="" src="assets/tech-4.svg" style="width:23.833px;height:19.5px"></div><h3>VIP Private Operatories</h3><p>Private suites featuring ceiling-<br>embedded streaming displays,<br>Bose noise-canceling headsets, and<br>aromatherapy.</p></div>
+   <div class="feat5">
+    <div class="g"><div class="ov"><img alt="" src="assets/tech-5.svg" style="width:23.833px;height:18.417px"></div><div class="tx"><h3>Rapid Emergency Dental Triage</h3><p>Severe toothache, cracked crown or avulsed tooth?<br>Same-day immediate relief slots on call 24/7.</p></div></div>
+    <a href="#contact">Emergency Line</a>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section class="bk" id="booking">
+ <div class="bk-card">
+  <div class="bk-top">
+   <div class="bk-tt"><div class="k">RESERVE CLINICAL SUITE</div><h2>Schedule Your Consultation</h2><p>Direct scheduling with Dr. Julian Vance &amp; Senior Cosmetic Specialists.</p></div>
+   <div class="bk-sec">Strict HIPAA Compliant Encryption</div>
+  </div>
+  <form class="bk-form" id="bkForm">
+   <div class="bk-g">
+    <div class="fld"><label for="bk-name">Full Patient Name *</label><input class="inp" id="bk-name" name="name" required placeholder="e.g. Katherine Sterling"></div>
+    <div class="fld"><span class="lb">Phone Number *</span><div class="phn"><select class="sel cc" name="cc" aria-label="Country code" style="padding:12px 14px">
+      <option value="+1">+1 (US/CA)</option>
+      <option value="+44">+44 (UK)</option>
+      <option value="+41">+41 (CH)</option>
+      <option value="+971">+971 (UAE)</option>
+      <option value="+61">+61 (AU)</option>
+      <option value="+49">+49 (DE)</option>
+     </select><input class="inp" name="phone" required placeholder="(555) 234-5678" style="flex:1 0 0;min-width:1px"></div></div>
+    <div class="fld" style="gap:4.01px"><label for="bk-mail">Email Address *</label><input class="inp" id="bk-mail" type="email" name="email" required placeholder="katherine@example.com"></div>
+    <div class="fld" style="gap:4.01px;padding-bottom:2.58px"><label for="bk-tr">Treatment Required *</label><select class="sel tr" id="bk-tr" name="treatment" required style="padding:12px 18px">
+     <option value="">Select Primary Concern *</option>
+     <option value="implants">Micro-Robotic Guided Dental Implants</option>
+     <option value="veneers">Full Arch Monolithic Porcelain Veneers</option>
+     <option value="invisalign">Clear Aligners &amp; Invisalign Therapy</option>
+     <option value="braces">Ceramic Aesthetic Braces</option>
+     <option value="whitening">Cold Blue Laser In-Office Whitening</option>
+     <option value="rootcanal">Zeiss Microscopic Root Canal Therapy</option>
+     <option value="fullmouth">Full Mouth Rehabilitation Consultation</option>
+     <option value="emergency">24/7 Immediate Emergency Relief</option>
+    </select></div>
+    <div class="fld"><label for="bk-date">Preferred Appointment Date *</label><input class="dte" id="bk-date" type="date" name="date" required></div>
+    <div class="fld" style="padding-bottom:13.2px"><span class="lb">Preferred Time Window *</span><div class="tw"><label><input type="radio" name="time" value="Morning" checked><span>Morning</span></label><label><input type="radio" name="time" value="Afternoon"><span>Afternoon</span></label><label><input type="radio" name="time" value="Evening"><span>Evening</span></label></div></div>
+   </div>
+   <div class="bk-msg"><label for="bk-msg">Specific Symptoms, Medical History or Aesthetic Goals</label><textarea id="bk-msg" name="message" placeholder="Tell us about existing sensitivity, past dental anxiety, or your ideal aesthetic smile timeline..."></textarea></div>
+   <div class="bk-act"><div class="n"><img alt="" src="assets/bk-lock.svg">Zero spam guarantee. Concierge replies within 60 minutes.</div><button class="bk-btn" type="submit">Confirm Priority Appointment <img alt="" src="assets/bk-arrow.svg"></button></div>
+  </form>
+ </div>
+</section>
+
+<section class="ct" id="contact">
+ <div class="ct-g">
+  <div class="ct-l">
+   <div class="ct-h"><div class="k">GET IN TOUCH</div><h2>Concierge &amp; Location</h2><p>We are located on Upper Park Avenue with dedicated medical elevators<br>and private underground valet parking.</p></div>
+   <div class="ct-cards">
+    <div class="cc"><img class="ic" alt="" src="assets/ct-phone.svg" style="width:18px;height:18px"><div class="lb">DIRECT TELEPHONE</div><a class="ln" href="tel:+18004922872" style="top:69.39px;font-size:22px;line-height:29.7px;letter-spacing:-.33px;white-space:nowrap">+1 (800) 492-AURA</a><div class="sub" style="top:103.08px">Local: +1 (212) 555-0199</div></div>
+    <div class="cc"><img class="ic" alt="" src="assets/ct-mail.svg" style="width:20px;height:20px"><div class="lb">CLINICAL CONCIERGE</div><a class="ln" href="mailto:concierge@auradentalclinic.com" style="top:69.64px;font-size:14px;line-height:17.5px;letter-spacing:.14px;overflow-wrap:anywhere">concierge@auradentalclinic.com</a><div class="sub" style="top:108.39px">Records: records@auradental.com</div></div>
+    <div class="wa"><div class="g"><div class="ci"><img alt="" src="assets/ct-wa.svg"></div><div class="tx"><h4>WhatsApp Direct Consultation</h4><p>Send dental photos or X-rays for<br>instant review by our on-duty triage<br>dentist.</p></div></div><a href="https://wa.me/18004922872?text=Hello%20AURA%20Dental,%20I%20would%20like%20to%20request%20a%20clinical%20consultation." target="_blank" rel="noopener noreferrer">Start WhatsApp Chat <img alt="" src="assets/ct-wa-arrow.svg"></a></div>
+   </div>
+   <div class="hrs"><div class="t">OPERATIONAL SCHEDULE</div>
+    <div class="r"><b>Monday – Friday</b><span>8:00 AM – 8:00 PM EST</span></div>
+    <div class="r"><b>Saturday</b><span>9:00 AM – 6:00 PM EST</span></div>
+    <div class="r"><b>Sunday Emergency</b><span class="ac">24/7 On-Call Triage</span></div>
+   </div>
+  </div>
+  <div class="ct-r">
+   <div class="map">
+    <div class="mi"><img alt="" src="assets/ct-map.png"></div>
+    <div class="pin"><div class="pc"><img alt="" src="assets/ct-pin.svg"></div><div class="tx"><h4>AURA Dental Suite 400</h4><p>740 Park Avenue, Medical District, NY 10021</p></div></div>
+    <a class="gm" href="https://www.google.com/maps/search/?api=1&amp;query=740+Park+Avenue+New+York+NY+10021" target="_blank" rel="noopener">Open in Google Maps <img alt="" src="assets/ct-ext.svg"></a>
+   </div>
+   <div class="info"><div style="width:311.08px"><img alt="" src="assets/ct-parking.svg" style="width:9.75px;height:13.5px">Complimentary Heated Valet Parking at Entrance</div><div style="width:144.8px"><img alt="" src="assets/ct-ada.svg" style="width:10.5px;height:15px">ADA Fully Accessible</div></div>
+  </div>
+ </div>
+</section>
+<footer class="ftr">
+ <div class="ftr-in">
+  <div class="ftr-top">
+   <div class="ftr-col">
+    <div class="ftr-brand">
+     <div class="ftr-emblem"><img src="assets/icon-certified.svg" style="width:18px;height:18px;filter:brightness(0) invert(1)" alt=""></div>
+     <span>AURA DENTAL</span>
+    </div>
+    <p>Pioneering advanced surgical implantology and bespoke aesthetic smile architecture with pristine clinical hospitality and architectural tranquility.</p>
+    <div class="ftr-badges">
+     <span>AACD Accredited</span>
+     <span>ITI Implant Center</span>
+     <span>ISO 9001 Surgical Suite</span>
+    </div>
+   </div>
+   <div class="ftr-col">
+    <h5>CLINICAL EXCELLENCE</h5>
+    <div class="ftr-links">
+     <a href="#treatments">Full-Arch Guided Implants</a>
+     <a href="#treatments">Porcelain Veneer Studio</a>
+     <a href="#hero">3D CBCT Guided Diagnostics</a>
+     <a href="#lab">In-House Robotics &amp; CAD/CAM</a>
+     <a href="#results">Aesthetic Transformation Gallery</a>
+    </div>
+   </div>
+   <div class="ftr-col">
+    <h5>SUITE HOURS &amp; ACCESS</h5>
+    <div class="ftr-links" style="gap:6px">
+     <p><b style="color:#fff">Mon – Fri:</b> 8:00 AM – 8:00 PM EST</p>
+     <p><b style="color:#fff">Saturday:</b> 9:00 AM – 6:00 PM EST</p>
+     <p><b style="color:#00e676">Sunday:</b> 24/7 On-Call Triage</p>
+     <p style="color:#00e676;padding-top:6px">Priority Heated Valet Parking</p>
+    </div>
+   </div>
+   <div class="ftr-col">
+    <h5>CLINICAL DISPATCH</h5>
+    <p>Receive peer-reviewed insights on implantology advancements and cosmetic design breakthroughs.</p>
+    <form class="ftr-nl" onsubmit="event.preventDefault();alert('Thank you for subscribing to AURA Clinical Dispatch.');">
+     <input type="email" required placeholder="Enter medical contact email">
+     <button type="submit">Join</button>
+    </form>
+    <span style="font-size:11px;color:#666666;margin-top:4px">Strict privacy compliance under HIPAA &amp; GDPR.</span>
+   </div>
+  </div>
+  <div class="ftr-bot">
+   <div>© 2026 AURA Dental Institute &amp; Advanced Implant Center. All clinical rights reserved.</div>
+   <div>
+    <a href="#narrative">Surgical Protocols</a>
+    <a href="#contact">Privacy Statement</a>
+    <a href="tel:+18004922872">Emergency Triage Line</a>
+   </div>
+  </div>
+ </div>
+</footer>
+<script>document.getElementById('bkForm').addEventListener('submit',function(e){e.preventDefault()});
+
+(function(){
+  var f = document.getElementById('cmp'),
+      b = document.getElementById('cmpBefore'),
+      d = document.getElementById('cmpDiv'),
+      imgBefore = document.getElementById('cmpImgBefore'),
+      imgAfter = document.getElementById('cmpImgAfter'),
+      title = document.getElementById('cmpTitle'),
+      desc = document.getElementById('cmpDesc'),
+      on = false;
+
+  
+    var casesData = {
+    'implants': {
+      before: 'assets/case_implants_before.png',
+      after: 'assets/case_implants_after.png',
+      title: 'Micro-Robotic Guided Implant Restoration',
+      desc: 'Completed in 2 visits • Single missing incisor restored • Cold-worked Swiss titanium &amp; biocompatible zirconia'
+    },
+    'braces': {
+      before: 'assets/case_braces_before.png',
+      after: 'assets/case_braces_after.png',
+      title: 'Precision Biological Alignment &amp; Arch Expansion',
+      desc: 'Completed in 9 months • Low-friction bracket system • Comprehensive diastema closure &amp; bite correction'
+    },
+    'whitening': {
+      before: 'assets/case_whitening_before.png',
+      after: 'assets/case_whitening_after.png',
+      title: 'Cold Blue Laser In-Office Enamel Whitening',
+      desc: 'Completed in single 45-min visit • 8 shades brighter • Medical-grade peroxide with zero sensitivity'
+    },
+    'rootcanal': {
+      before: 'assets/case_rootcanal_before.png',
+      after: 'assets/case_rootcanal_after.png',
+      title: 'Carl Zeiss 25× Microscopic Endodontic Therapy',
+      desc: 'Completed in single 60-min visit • Ultrasonic cavitation sterilisation • Bioceramic apex seal with complete pain relief'
+    }
+  };
+
+  function set(x){
+    var r = f.getBoundingClientRect();
+    var p = Math.max(0, Math.min(1, (x - r.left) / r.width)) * 100;
+    b.style.width = p + '%';
+    d.style.left = 'calc(' + p + '% - 20px)';
+    var wBox = b.querySelector('.w');
+    if (wBox) wBox.style.width = r.width + 'px';
+    if (imgBefore) imgBefore.style.width = r.width + 'px';
+  }
+
+  f.addEventListener('pointerdown', function(e){
+    on = true;
+    f.setPointerCapture(e.pointerId);
+    set(e.clientX);
+  });
+  f.addEventListener('pointermove', function(e){
+    if(on) set(e.clientX);
+  });
+  f.addEventListener('pointerup', function(e){
+    on = false;
+    try { f.releasePointerCapture(e.pointerId); } catch(err){}
+  });
+  f.addEventListener('pointercancel', function(e){
+    on = false;
+    try { f.releasePointerCapture(e.pointerId); } catch(err){}
+  });
+
+  document.querySelectorAll('.btab').forEach(function(t){
+    t.addEventListener('click', function(){
+      document.querySelectorAll('.btab').forEach(function(o){ o.classList.remove('on'); });
+      t.classList.add('on');
+      var caseId = t.getAttribute('data-case') || 'implants';
+      var data = casesData[caseId];
+      if (data) {
+        if (imgBefore) imgBefore.src = data.before;
+        if (imgAfter) imgAfter.src = data.after;
+        if (title) title.innerHTML = data.title;
+        if (desc) desc.innerHTML = data.desc;
+      }
+    });
+  });
+})();
+
+// --- Procedural Lab Simulator Engine ---
+function switchSim(simId) {
+  document.querySelectorAll('.lab-tabs .ltab').forEach(function(btn) {
+    btn.classList.remove('on');
+  });
+  const eventTarget = window.event ? window.event.currentTarget : null;
+  if (eventTarget) eventTarget.classList.add('on');
+
+  document.querySelectorAll('.sim-panel').forEach(function(panel) {
+    panel.classList.remove('on');
+  });
+  const activePanel = document.getElementById('simView-' + simId);
+  if (activePanel) activePanel.classList.add('on');
+}
+
+function setImplantStage(stage) {
+  const titles = [
+    "1. Minimally Invasive Site Prep",
+    "2. Precision Guided Fixture Placement",
+    "3. Osseointegration Integration",
+    "4. Zirconia Crown Restoration"
+  ];
+  const descs = [
+    "The compromised tooth root is delicately removed with zero bone trauma. Ultrasonic piezosurgery dispatches cavitation waves to sterilize the biological pocket.",
+    "Computer-milled 3D surgical guide directs the Swiss titanium fixture into exact bone density at 35 N/cm torque without incisions.",
+    "Trabecular bone osteoblasts fuse with titanium micropores over 4 to 8 weeks, creating permanent biological anchor strength.",
+    "Bespoke CAD/CAM zirconia abutment and crown cemented with optical bite equilibrium for complete natural mastication and aesthetics."
+  ];
+  const subheads = [
+    "STAGE 1 / 4: TOOTH BED EXTRACTION & SANITIZATION",
+    "STAGE 2 / 4: TITANIUM FIXTURE INSERTION",
+    "STAGE 3 / 4: OSSEOINTEGRATION LOCK",
+    "STAGE 4 / 4: CAD/CAM CROWN CEMENTATION"
+  ];
+
+  document.getElementById('implantHeadline').innerText = titles[stage - 1];
+  document.getElementById('implantDesc').innerText = descs[stage - 1];
+  document.getElementById('implantStageTitle').innerText = subheads[stage - 1];
+  
+  const stageImg = document.getElementById('implantStageImg');
+  if (stageImg) stageImg.src = 'assets/lab-implant-stage' + stage + '.svg';
+
+  for (let i = 1; i <= 4; i++) {
+    const btn = document.getElementById('impBtn-' + i);
+    if (btn) btn.classList.toggle('on', i === stage);
+  }
+}
+
+function updateAlignment(val) {
+  const p = val / 100;
+  const label = document.getElementById('alignWeekLabel');
+  if (label) {
+    if (p === 0) label.innerText = "Week 0 (Crowded)";
+    else if (p === 1) label.innerText = "Week 20 Harmonious Arch";
+    else label.innerText = "Week " + Math.round(p * 20) + " In Progress";
+  }
+  
+  const t1 = document.getElementById('alignTooth1');
+  const t2 = document.getElementById('alignTooth2');
+  const t3 = document.getElementById('alignTooth3');
+  const t4 = document.getElementById('alignTooth4');
+
+  const r1 = -18 + (18 * p);
+  const r2 = 12 - (12 * p);
+  const r3 = -8 + (8 * p);
+  const r4 = 16 - (16 * p);
+
+  const y1 = 12 - (12 * p);
+  const y2 = -8 + (8 * p);
+  const y3 = 4 - (4 * p);
+  const y4 = 16 - (16 * p);
+
+  if (t1) t1.style.transform = `rotate(${r1}deg) translateY(${y1}px)`;
+  if (t2) t2.style.transform = `rotate(${r2}deg) translateY(${y2}px)`;
+  if (t3) t3.style.transform = `rotate(${r3}deg) translateY(${y3}px)`;
+  if (t4) t4.style.transform = `rotate(${r4}deg) translateY(${y4}px)`;
+}
+
+let trayActive = false;
+function toggleTraySnap() {
+  trayActive = !trayActive;
+  const btn = document.getElementById('trayToggleBtn');
+  const img = document.getElementById('trayImg');
+  if (trayActive) {
+    if (btn) {
+      btn.innerText = "Tray Seated • Force Vectors Engaged";
+      btn.style.background = "#00c853";
+    }
+    if (img) img.style.transform = "scale(1.04)";
+  } else {
+    if (btn) {
+      btn.innerText = "Simulate Tray Insertion & Force Vectors";
+      btn.style.background = "#006194";
+    }
+    if (img) img.style.transform = "scale(1)";
+  }
+}
+
+function activateCuringLight() {
+  const btn = document.getElementById('cureActionBtn');
+  const stat = document.getElementById('curingStatus');
+  if (btn) btn.disabled = true;
+  if (stat) {
+    stat.innerText = "Curing: 470nm Photopolymerization in Progress...";
+    stat.style.color = "#0284c7";
+  }
+
+  setTimeout(function() {
+    if (stat) {
+      stat.innerText = "Polymerization 100% Complete. Vickers Hardness 450 MPa.";
+      stat.style.color = "#00c853";
+    }
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = "Restoration Fully Cured";
+      btn.style.background = "#00c853";
+    }
+  }, 1400);
+}
+
+function stepRootCanal(step) {
+  const title = document.getElementById('rcTitle');
+  const desc = document.getElementById('rcDesc');
+  if (step === 'clean') {
+    if (title) title.innerText = "Canal Debridement Complete";
+    if (desc) desc.innerText = "Infected vascular tissue gently cleared along curved micro-canals with ultrasonic sodium hypochlorite irrigation.";
+  } else if (step === 'seal') {
+    if (title) title.innerText = "Gutta-Percha Bioceramic Seal";
+    if (desc) desc.innerText = "Canal hermetically sealed from apex to coronal orifice with warm bioceramic flow preventing micro-bacterial ingress.";
+  }
+}
+
+// --- Hero 3D Tooth Animation & Scroll Engine ---
+(function() {
+  const TOTAL_FRAMES = 146;
+  const canvas = document.getElementById('heroCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const track = document.getElementById('heroTrack');
+  const modeButtons = document.querySelectorAll('.modes .mode');
+  
+  const frames = new Array(TOTAL_FRAMES);
+  let loadedCount = 0;
+  let firstRendered = false;
+
+  function getFramePath(i) {
+    return 'frames/frame_' + String(i).padStart(3, '0') + '.webp';
+  }
+
+  // Preload frame 0 immediately
+  const f0 = new Image();
+  f0.src = getFramePath(0);
+  f0.onload = function() {
+    frames[0] = f0;
+    loadedCount++;
+    if (!firstRendered) {
+      drawFrame(0);
+      firstRendered = true;
+    }
+  };
+
+  // Preload remaining frames
+  for (let i = 1; i < TOTAL_FRAMES; i++) {
+    const img = new Image();
+    img.src = getFramePath(i);
+    img.onload = function() {
+      frames[i] = img;
+      loadedCount++;
+    };
+  }
+
+  function getLoadedFrame(targetIdx) {
+    if (frames[targetIdx] && frames[targetIdx].complete && frames[targetIdx].naturalWidth > 0) {
+      return frames[targetIdx];
+    }
+    for (let offset = 1; offset < TOTAL_FRAMES; offset++) {
+      const before = targetIdx - offset;
+      const after = targetIdx + offset;
+      if (before >= 0 && frames[before] && frames[before].complete && frames[before].naturalWidth > 0) {
+        return frames[before];
+      }
+      if (after < TOTAL_FRAMES && frames[after] && frames[after].complete && frames[after].naturalWidth > 0) {
+        return frames[after];
+      }
+    }
+    return frames[0] || null;
+  }
+
+  function drawFrame(idx) {
+    const img = getLoadedFrame(idx);
+    if (!img) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  }
+
+  let currentProgress = 0;
+  let targetProgress = 0;
+  let currentRenderedFrame = -1;
+  let isDragging = false;
+  let dragStartX = 0;
+  let dragStartProgress = 0;
+
+  function getScrollProgress() {
+    if (!track) return 0;
+    const rect = track.getBoundingClientRect();
+    const scrollDist = track.offsetHeight - window.innerHeight;
+    if (scrollDist <= 0) return 0;
+    const scrolled = -rect.top;
+    return Math.max(0, Math.min(1, scrolled / scrollDist));
+  }
+
+  window.addEventListener('scroll', function() {
+    if (!isDragging) {
+      targetProgress = getScrollProgress();
+    }
+  }, { passive: true });
+
+  // Interactive Drag-to-Rotate / Inspect
+  canvas.addEventListener('pointerdown', function(e) {
+    isDragging = true;
+    dragStartX = e.clientX;
+    dragStartProgress = targetProgress;
+    canvas.setPointerCapture(e.pointerId);
+  });
+
+  canvas.addEventListener('pointermove', function(e) {
+    if (!isDragging) return;
+    const dx = e.clientX - dragStartX;
+    const deltaProgress = dx / 850;
+    targetProgress = Math.max(0, Math.min(1, dragStartProgress + deltaProgress));
+  });
+
+  function stopDrag(e) {
+    if (isDragging) {
+      isDragging = false;
+      try { canvas.releasePointerCapture(e.pointerId); } catch(err){}
+      if (track) {
+        const scrollDist = track.offsetHeight - window.innerHeight;
+        const targetY = track.offsetTop + (targetProgress * scrollDist);
+        window.scrollTo({ top: targetY, behavior: 'auto' });
+      }
+    }
+  }
+
+  canvas.addEventListener('pointerup', stopDrag);
+  canvas.addEventListener('pointercancel', stopDrag);
+
+  // Mode Buttons Click
+  modeButtons.forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const p = parseFloat(btn.getAttribute('data-target') || '0');
+      targetProgress = p;
+      if (track) {
+        const scrollDist = track.offsetHeight - window.innerHeight;
+        const targetY = track.offsetTop + (p * scrollDist);
+        window.scrollTo({ top: targetY, behavior: 'smooth' });
+      }
+    });
+  });
+
+  // Smooth Render Loop
+  function update() {
+    const diff = targetProgress - currentProgress;
+    if (Math.abs(diff) > 0.0004) {
+      currentProgress += diff * 0.12;
+    } else {
+      currentProgress = targetProgress;
+    }
+
+    const frameIdx = Math.min(TOTAL_FRAMES - 1, Math.max(0, Math.round(currentProgress * (TOTAL_FRAMES - 1))));
+    if (frameIdx !== currentRenderedFrame) {
+      drawFrame(frameIdx);
+      currentRenderedFrame = frameIdx;
+    }
+
+    // Sync Mode Tabs
+    let activeIdx = 0;
+    if (currentProgress >= 0.72) activeIdx = 2; // Implant Integration
+    else if (currentProgress >= 0.22) activeIdx = 1; // Cross-Section Pulp
+    else activeIdx = 0; // Full Enamel
+
+    modeButtons.forEach(function(btn, i) {
+      const isCurrent = (i === activeIdx);
+      if (btn.classList.contains('on') !== isCurrent) {
+        btn.classList.toggle('on', isCurrent);
+        btn.setAttribute('aria-selected', isCurrent ? 'true' : 'false');
+      }
+    });
+
+    requestAnimationFrame(update);
+  }
+
+  targetProgress = getScrollProgress();
+  currentProgress = targetProgress;
+  requestAnimationFrame(update);
+})();
+</script>
+</body>
+</html>

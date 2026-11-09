@@ -1,0 +1,51 @@
+<svg viewBox="0 0 400 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="toothMolar" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="60%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#e2e8f0"/>
+    </linearGradient>
+    <linearGradient id="sealGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0284c7"/>
+      <stop offset="100%" stop-color="#006194"/>
+    </linearGradient>
+    <linearGradient id="nitiGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#64748b"/>
+      <stop offset="50%" stop-color="#e2e8f0"/>
+      <stop offset="100%" stop-color="#475569"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Molar Tooth Cross-Section with Dual Roots -->
+  <g transform="translate(120, 40)" filter="drop-shadow(0 10px 20px rgba(0,0,0,0.08))">
+    <!-- Crown and Dual Root Silhouette -->
+    <path d="M 20 60 C 15 20, 50 15, 80 18 C 110 15, 145 20, 140 60 C 135 110, 150 180, 135 240 C 120 240, 105 180, 80 110 C 55 180, 40 240, 25 240 C 10 180, 25 110, 20 60 Z" fill="url(#toothMolar)" stroke="#94a3b8" stroke-width="2"/>
+    
+    <!-- Root Canal Cavities (Hermetically Sealed in Bioceramic) -->
+    <!-- Left Canal -->
+    <path d="M 45 70 C 45 110, 32 170, 30 230 C 34 230, 42 170, 52 110 Z" fill="url(#sealGrad)"/>
+    <!-- Right Canal -->
+    <path d="M 115 70 C 115 110, 128 170, 130 230 C 126 230, 118 170, 108 110 Z" fill="url(#sealGrad)"/>
+    <!-- Pulp Chamber -->
+    <path d="M 45 70 C 45 55, 115 55, 115 70 Z" fill="url(#sealGrad)"/>
+  </g>
+
+  <!-- Nickel-Titanium Rotary File Needle (Navigating Left Canal) -->
+  <g transform="translate(155, 15)">
+    <rect x="0" y="0" width="10" height="25" rx="2" fill="#006194"/>
+    <path d="M 3 25 L 7 25 L 6 130 L 4 130 Z" fill="url(#nitiGrad)" stroke="#334155" stroke-width="1"/>
+    <!-- Flute Spirals -->
+    <line x1="3" y1="45" x2="7" y2="48" stroke="#334155" stroke-width="1.5"/>
+    <line x1="3" y1="65" x2="7" y2="68" stroke="#334155" stroke-width="1.5"/>
+    <line x1="3" y1="85" x2="7" y2="88" stroke="#334155" stroke-width="1.5"/>
+    <line x1="4" y1="105" x2="6" y2="108" stroke="#334155" stroke-width="1.5"/>
+  </g>
+
+  <!-- Badges -->
+  <rect x="25" y="25" width="150" height="30" rx="15" fill="#ffffff" filter="drop-shadow(0 4px 6px rgba(0,0,0,0.08))"/>
+  <circle cx="39" cy="40" r="5" fill="#006194"/>
+  <text x="50" y="44" font-family="'Plus Jakarta Sans',sans-serif" font-size="11" font-weight="700" fill="#006194">ZEISS 25X OPTICAL</text>
+
+  <rect x="220" y="255" width="155" height="30" rx="15" fill="#006194" filter="drop-shadow(0 4px 6px rgba(0,97,148,0.2))"/>
+  <text x="232" y="274" font-family="'Plus Jakarta Sans',sans-serif" font-size="11" font-weight="700" fill="#ffffff">Bioceramic Apex Hermetic Seal</text>
+</svg>

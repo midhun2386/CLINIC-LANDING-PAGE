@@ -1,0 +1,62 @@
+<svg viewBox="0 0 400 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="boneGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f0f4f8"/>
+      <stop offset="100%" stop-color="#d9e2ec"/>
+    </linearGradient>
+    <linearGradient id="gumGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f8bbd0"/>
+      <stop offset="100%" stop-color="#ec407a"/>
+    </linearGradient>
+    <radialGradient id="waveGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#006194" stop-opacity="0.6"/>
+      <stop offset="70%" stop-color="#0284c7" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#38bdf8" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="metalGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#94a3b8"/>
+      <stop offset="50%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#64748b"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Bone Base -->
+  <path d="M 40 160 C 100 160, 130 190, 200 190 C 270 190, 300 160, 360 160 L 360 300 C 360 310, 350 315, 340 315 L 60 315 C 50 315, 40 310, 40 300 Z" fill="url(#boneGrad)" stroke="#bcccdc" stroke-width="2"/>
+  
+  <!-- Trabecular bone structure pattern -->
+  <g opacity="0.5">
+    <circle cx="80" cy="240" r="4" fill="#9fb3c8"/>
+    <circle cx="110" cy="265" r="3" fill="#9fb3c8"/>
+    <circle cx="130" cy="230" r="3.5" fill="#9fb3c8"/>
+    <circle cx="270" cy="230" r="3.5" fill="#9fb3c8"/>
+    <circle cx="290" cy="265" r="3" fill="#9fb3c8"/>
+    <circle cx="320" cy="240" r="4" fill="#9fb3c8"/>
+    <circle cx="200" cy="275" r="3" fill="#9fb3c8"/>
+    <path d="M 60 210 Q 80 230 100 220 M 300 210 Q 320 230 340 220" stroke="#9fb3c8" stroke-width="2" fill="none"/>
+  </g>
+
+  <!-- Gum Crest -->
+  <path d="M 30 145 C 90 145, 130 160, 165 160 C 180 160, 190 172, 200 172 C 210 172, 220 160, 235 160 C 270 160, 310 145, 370 145 L 370 165 C 310 165, 270 180, 235 180 C 220 180, 210 192, 200 192 C 190 192, 180 180, 165 180 C 130 180, 90 165, 30 165 Z" fill="url(#gumGrad)"/>
+
+  <!-- Extraction Socket Bed -->
+  <path d="M 168 172 C 168 245, 178 260, 200 260 C 222 260, 232 245, 232 172 Z" fill="#cad5e2" stroke="#94a3b8" stroke-width="2"/>
+
+  <!-- Cavitation Ultrasonic Waves -->
+  <circle cx="200" cy="216" r="22" stroke="#0284c7" stroke-width="2" stroke-dasharray="4 4" fill="url(#waveGrad)"/>
+  <circle cx="200" cy="216" r="38" stroke="#006194" stroke-width="1.5" stroke-dasharray="5 5" fill="none" opacity="0.8"/>
+  <circle cx="200" cy="216" r="54" stroke="#38bdf8" stroke-width="1" stroke-dasharray="6 6" fill="none" opacity="0.5"/>
+
+  <!-- Piezosurgery Ultrasonic Handpiece Tip -->
+  <path d="M 194 30 L 206 30 L 204 110 L 202 145 L 198 145 L 196 110 Z" fill="url(#metalGrad)" stroke="#475569" stroke-width="1.5"/>
+  <rect x="188" y="20" width="24" height="15" rx="3" fill="#334155"/>
+  <circle cx="200" cy="148" r="4" fill="#38bdf8" opacity="0.9"/>
+  <path d="M 196 148 L 180 156 M 204 148 L 220 156 M 200 152 L 200 165" stroke="#38bdf8" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Badges & Callouts -->
+  <rect x="50" y="40" width="120" height="28" rx="14" fill="#ffffff" filter="drop-shadow(0 4px 6px rgba(0,0,0,0.08))"/>
+  <circle cx="65" cy="54" r="5" fill="#006194"/>
+  <text x="76" y="58" font-family="'Plus Jakarta Sans',sans-serif" font-size="11" font-weight="700" fill="#006194">PIEZOSURGERY</text>
+
+  <rect x="230" y="90" width="140" height="28" rx="14" fill="#ffffff" filter="drop-shadow(0 4px 6px rgba(0,0,0,0.08))"/>
+  <text x="242" y="108" font-family="'Plus Jakarta Sans',sans-serif" font-size="11" font-weight="600" fill="#334155">Cavitation Sterilization</text>
+</svg>
